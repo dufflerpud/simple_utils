@@ -81,7 +81,7 @@ sub debug
 #	Main								#
 #########################################################################
 
-if( $ENV{SCRIPT_NAME} )
+if( 0 && $ENV{SCRIPT_NAME} )
     { &CGI_arguments(); }
 else
     {
