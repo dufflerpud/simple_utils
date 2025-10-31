@@ -42,6 +42,7 @@ our %ONLY_ONE_DEFAULTS =
     (
     "verbosity"		=> 0,
     "text"		=> "",
+    "mode"		=> [ "tlbr", "bltr" ],
     "input_file"	=> "/dev/stdin",
     "output_file"	=> "",
     "nheight"		=> 57,
@@ -107,8 +108,10 @@ if( $ARGS{text} ne "" )
 	    for( my $col=0; $col<$nchars; $col++ )
 	        {
 		push( @toprint, "<th width=${cwidth}px height=${cheight}px align=center valign=middle>" );
-		if( $row==$col )
+		if( $ARGS{mode} eq "tlbr" && $row==$col )
 		    { push( @toprint, $characters[$row] ); }
+		elsif( $ARGS{mode} eq "bltr" && ($row+$col)==($nchars-1))
+		    { push( @toprint, $characters[$col] ); }
 		else
 		    { push( @toprint, "&nbsp;" ); }
 		push( @toprint, "</th>" );
