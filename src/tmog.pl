@@ -70,7 +70,7 @@ else
 	    {
 	    "verbosity"	=>	0,
 	    "type"	=>	[ "", @TYPES ],
-	    "mode"	=>	{ default=>"", re=>"\\o\\o\\o|\\o\\o\\o\\o" },
+	    "mode"	=>	{ default=>"", re=>"[0-7][0-7][0-7]|[0-7][0-7][0-7][0-7]|[ugorwxst,=+\\-]*[=+\\-][rwxst]+" },
 	    "owner"	=>	{ default=>"", re=>"\\w+" },
 	    "group"	=>	{ default=>"", re=>"\\w+" },
 	    "major"	=>	{ default=>"", re=>"\\d+" },
@@ -86,7 +86,10 @@ foreach my $f ( @files )
     {
     if( &inlist( $f, @TYPES ) && $ARGS{type} eq "" )
 	{ $ARGS{type}=$f; }
-    elsif( ( $f=~/^[0-7][0-7][0-7][0-7]$/ || $f=~/^[0-7][0-7][0-7]$/ )
+    elsif( $ARGS{mode} eq "" &&
+	( $f=~/^[0-7][0-7][0-7][0-7]$/
+	|| $f=~/^[0-7][0-7][0-7]$/
+	|| $f=~/^[ugorwxst,=+\-]*[=+\-][rwxst]+$/ )
 	&& $ARGS{mode} eq "" )
 	{ $ARGS{mode}=$f; }
     elsif( $f =~ /^(\w*):(\w*)$/ )
@@ -114,9 +117,7 @@ if( $ARGS{type} eq "l" && ! $ARGS{link} && @files )
 push( @problems, "No files specified.") if( ! @files );
 &usage(@problems) if( @problems );
 
-grep( printf("$_ = $ARGS{$_}\n"), keys %ARGS );
-print "files=[",join(",",@files),"]\n";
-
+umask( 0 );
 foreach my $f ( @files )
     {
     &echodo( "rm -f '$f'" ) if( $ARGS{delete} && -e $f );
