@@ -28,7 +28,6 @@ our $exit_stat = 0;
 #=======================================================================#
 #	New code not from prototype.pl					#
 #		Should at least include:				#
-#			parse_arguments()				#
 #			CGI_arguments()					#
 #			usage()						#
 #=======================================================================#
