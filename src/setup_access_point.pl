@@ -28,7 +28,7 @@ my $TMP = "/tmp/$PROG.$$";
 #my $TMP = "/tmp/$PROG";
 my $CONFIG_BASE = "$ENV{HOME}/.config/$PROG";
 
-my $BASEDIR = "/u0/non_sys/usr/local/projects/setup_ap";
+my $BASEDIR = "%%PROJECTDIR%%";
 $BASEDIR = "/usr/local/projects/$PROG" if( ! -d $BASEDIR );
 
 my %ONLY_ONE_DEFAULTS =
@@ -417,6 +417,7 @@ else
 print STDERR "Creating $config.\n" if( ! -r $config );
 $ARGS{m} = 0;	# Don't ever want to DEFAULT to setting up access point
 $ARGS{n} = 0;	# Don't ever want to DEFAULT to doing nothing
+$Data::Dumper::Indent = 1;
 &write_file($config,  Data::Dumper->Dump( [ \%ARGS ], [ qw(*ONLY_ONE_DEFAULTS) ] ) );
 
 exec("rm -rf $TMP");
