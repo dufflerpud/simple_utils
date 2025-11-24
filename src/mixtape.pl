@@ -175,7 +175,7 @@ sub continually_play_list
 		if( $ARGS{player} =~ /mplayer/ )
 	    	    { push( @args, "-volume $ARGS{amplitude}" ); }
 		else
-	    	    { push( @args, "--volume=$ARGS{amplitude}" ); }
+	    	    { push( @args, "--volume=".int(65536*$ARGS{amplitude}/100.0) ); }
 		}
 	    push( @args, $song, "2>/dev/null" );
 	    my $cmd = join(" ",@args);
