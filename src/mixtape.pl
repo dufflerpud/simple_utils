@@ -3,7 +3,7 @@
 use strict;
 
 use lib "/usr/local/lib/perl";
-use cpi_file qw( read_file read_lines echodo fatal );
+use cpi_file qw( read_file read_lines echodo fatal first_in_path );
 use cpi_reorder qw( reorder );
 use cpi_arguments qw( parse_arguments );
 use cpi_vars;
@@ -23,8 +23,7 @@ my %ONLY_ONE_DEFAULTS =
     "verify"		=>	{ alias=>[ "-mode", "verify" ] },
     "cgi"		=>	{ alias=>[ "-mode", "cgi" ] },
     "cat"		=>	{ alias=>[ "-mode", "cat" ] },
-    #"player"		=>	"mplayer -really-quiet -quiet",
-    "player"		=>	"paplay",
+    "player"		=>	&first_in_path("mpv","mplayer","paplay"),
     "verbosity"		=>	0,
     "amplitude"		=>	100
     );
@@ -165,18 +164,17 @@ sub cgi_list
 sub continually_play_list
     {
     my( @song_list ) = @_;
+
+    if( $ARGS{player} =~ /mplayer|mpv/ )
+	{ $ARGS{player} .= " -really-quiet -quiet -volume=$ARGS{amplitude}"; }
+    elsif( $ARGS{player} =~ /paplay/ )
+        { $ARGS{player} .= " --volume=".int(65536*$ARGS{amplitude}/100.0); }
+
     while( 1 )
 	{
 	foreach my $song ( &reorder( @song_list ) )
 	    {
 	    my @args = ( $ARGS{player} );
-	    if( $ARGS{amplitude} ne "" )
-		{
-		if( $ARGS{player} =~ /mplayer/ )
-	    	    { push( @args, "-volume $ARGS{amplitude}" ); }
-		else
-	    	    { push( @args, "--volume=".int(65536*$ARGS{amplitude}/100.0) ); }
-		}
 	    push( @args, $song, "2>/dev/null" );
 	    my $cmd = join(" ",@args);
 	    $song =~ s+^\./++;
