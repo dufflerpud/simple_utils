@@ -23,6 +23,7 @@ our %ONLY_ONE_DEFAULTS =
     "title"		=>	"$YTDLP --get-title",
     "u"			=>	"$YTDLP -g",
     "converter"		=>	"/usr/local/bin/nene",
+    "maximum"		=>	"",
     "mplayer"		=>	"/bin/mplayer -really-quiet",
     "trim"		=>	"/home/chris/bin/trim",
     "ffmpegargs"	=>	"",
@@ -79,6 +80,7 @@ sub usage
 sub youtube_grab
     {
     my( $infile, $outfile ) = @_;
+
     my $url = ($infile=~/:/ ? "" : "https://youtube.com/watch?v=") . $infile;
     if( $outfile eq "" )
 	{
@@ -157,6 +159,7 @@ sub youtube_grab
 #########################################################################
 sub do_album
     {
+    my $counter = 0;
     foreach my $line ( split(/\n/,&read_file($ARGS{album})) )
 	{
 	my( $ytcode, @name_pieces ) = split(/\s/,$line);
@@ -166,8 +169,15 @@ sub do_album
 	    if( ! &inlist( &just_ext_of($filename),"mp3","mov") );
 	if( ! -s $filename )
 	    {
-	    &youtube_grab( $ytcode, $filename );
-	    #&echodo("youtube -v$ARGS{verbosity} $ARGS{youtubeargs} '$ytcode' $ARGS{youtubeargs} -o '$filename' </dev/null");
+	    if( $ARGS{maximum} eq "" )
+	        { &youtube_grab( $ytcode, $filename ); }
+	    elsif( $ARGS{maximum} == $counter )
+		{ print "To do:\n$line\n"; }
+	    elsif( $counter > $ARGS{maximum} )
+		{ print $line, "\n"; }
+	    else
+	        { &youtube_grab( $ytcode, $filename ); }
+	    $counter++;
 	    }
 	}
     }
