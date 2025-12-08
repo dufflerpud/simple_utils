@@ -4,6 +4,7 @@ use strict;
 
 use lib "/usr/local/lib/perl";
 use cpi_file qw( read_file read_lines echodo fatal first_in_path );
+use cpi_player qw( player );
 use cpi_reorder qw( reorder );
 use cpi_arguments qw( parse_arguments );
 use cpi_vars;
@@ -23,7 +24,7 @@ my %ONLY_ONE_DEFAULTS =
     "verify"		=>	{ alias=>[ "-mode", "verify" ] },
     "cgi"		=>	{ alias=>[ "-mode", "cgi" ] },
     "cat"		=>	{ alias=>[ "-mode", "cat" ] },
-    "player"		=>	&first_in_path("mpv","mplayer","paplay"),
+    "player"		=>	"",
     "verbosity"		=>	0,
     "amplitude"		=>	100
     );
@@ -165,21 +166,17 @@ sub continually_play_list
     {
     my( @song_list ) = @_;
 
-    if( $ARGS{player} =~ /mplayer|mpv/ )
-	{ $ARGS{player} .= " -really-quiet -quiet -volume=$ARGS{amplitude}"; }
-    elsif( $ARGS{player} =~ /paplay/ )
-        { $ARGS{player} .= " --volume=".int(65536*$ARGS{amplitude}/100.0); }
-
     while( 1 )
 	{
 	foreach my $song ( &reorder( @song_list ) )
 	    {
-	    my @args = ( $ARGS{player} );
-	    push( @args, $song, "2>/dev/null" );
-	    my $cmd = join(" ",@args);
 	    $song =~ s+^\./++;
 	    print "[$song]\n";
-	    &echodo($cmd);
+	    &player(
+		{
+		amplitude	=> $ARGS{amplitude},
+		player		=> $ARGS{player}
+		}, $song );
 	    }
 	}
     }
