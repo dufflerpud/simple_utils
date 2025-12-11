@@ -220,7 +220,7 @@ sub CGI_arguments
 sub spin_some_songs
     {
     my @song_list;
-    #@descs_todo = ("all") if( ! @descs_todo );
+    @descs_todo = ("all") if( ! @descs_todo );
 
     #chdir( $ARGS{directory} ) || &fatal("Cannot chdir($ARGS{directory}:  $!");
     #
