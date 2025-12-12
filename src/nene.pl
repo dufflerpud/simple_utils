@@ -25,7 +25,7 @@
 use strict;
 
 use lib "/usr/local/lib/perl";
-use cpi_make_from qw(convert_file generate_rules);
+use cpi_make_from qw(convert_file);
 use cpi_file qw(fatal);
 use cpi_arguments qw(parse_arguments);
 use cpi_vars;
@@ -97,9 +97,7 @@ else
 my( $dest_file ) = pop( @files );
 $cpi_vars::VERBOSITY if(0);
 $cpi_vars::VERBOSITY = $ARGS{verbosity};
-&generate_rules( $dest_file, @files );
-&convert_file( $dest_file );
-#&convert_file( $dest_file, @files );
+&convert_file( $dest_file, @files );
 exit(0);
 
 exit($exit_stat||0);
