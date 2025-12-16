@@ -225,8 +225,6 @@ sub spin_some_songs
     #chdir( $ARGS{directory} ) || &fatal("Cannot chdir($ARGS{directory}:  $!");
     #
     &create_search_strings();
-    print STDERR "search_strings=",join(",",keys %search_strings),".\n"
-	if($ARGS{verbosity});
 
     &usage( "No description specified." ) if( ! @descs_todo );
 
@@ -279,9 +277,6 @@ else
 
 0 if( $cpi_vars::VERBOSITY );
 $cpi_vars::VERBOSITY = $ARGS{verbosity};
-
-print join("\n\t","Args:",map{"$_:\t$ARGS{$_}"} sort keys %ARGS),
-    "\ndescs_todo=[",join(",",@descs_todo),"]\n" if( $ARGS{verbosity} );
 
 &spin_some_songs();
 
