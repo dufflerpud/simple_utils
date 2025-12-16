@@ -4,7 +4,7 @@ use strict;
 
 use lib "/usr/local/lib/perl";
 use cpi_file qw( read_file read_lines echodo fatal first_in_path );
-use cpi_player qw( player );
+use cpi_media qw( player );
 use cpi_reorder qw( reorder );
 use cpi_arguments qw( parse_arguments );
 use cpi_vars;
