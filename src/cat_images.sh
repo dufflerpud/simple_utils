@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 PROG=`basename $0`
 TMP=/tmp/$PROG		# or /tmp/$PROG.$$
@@ -7,6 +7,7 @@ GS_ARGS="-q -dBATCH -dNOPAUSE"
 REF=/home/chris/lib/template.odg
 ZIP=/home/chris/bin/oozip
 CVT=/usr/local/bin/nene
+VERBOSITY=0
 
 #PAMCUT_ARGS="-pad --height=3300"
 #GS_ARGS="$GS_ARGS -sPAPERSIZE=a3"
@@ -31,7 +32,7 @@ usage()
 #########################################################################
 echodo()
     {
-    echo "+ $*"
+    [ "$VERBOSITY" != 0 ] && echo "+ $*" 1>&2
     eval "$@"
     }
 
@@ -60,17 +61,17 @@ odg_files()
 	dname="$TMP.i/Pictures/file$index"
 	echo "Working on [$src]"
 	case "$src" in
-	    *.ps)		pstopdf < $src > $TMP.pdf
-	    			pdftoppm $TMP.pdf $dname
-	    			ppmstojpegs $TMP.i/Pictures
+	    *.ps)		echodo "pstopdf < $src > $TMP.pdf"
+	    			echodo "pdftoppm $TMP.pdf $dname"
+	    			echodo "ppmstojpegs $TMP.i/Pictures"
 				;;
-	    *.pdf)		pdftoppm $src $dname
-	    			ppmstojpegs $TMP.i/Pictures
+	    *.pdf)		echodo "pdftoppm $src $dname"
+	    			echodo "ppmstojpegs $TMP.i/Pictures"
 				;;
-	    *.pnm)		pnmtojpeg < $src > $dname.jpg		;;
-	    *.jpg|*.jpeg)	cp $src $dname.jpg			;;
-	    *.gif)		giftopnm <$src | pnmtojpeg >$dname.jpg	;;
-	    *.tiff)		tifftopnm <$src | pnmtojpeg >$dname.jpg	;;
+	    *.pnm)		echodo "pnmtojpeg < $src > $dname.jpg"		;;
+	    *.jpg|*.jpeg)	echodo "cp $src $dname.jpg"			;;
+	    *.gif)		echodo "giftopnm <$src | pnmtojpeg >$dname.jpg"	;;
+	    *.tiff)		echodo "tifftopnm <$src | pnmtojpeg >$dname.jpg";;
 	esac
 	index=`expr $index + 1`
     done
@@ -115,7 +116,7 @@ EOF
 
     #(cd $TMP.i; $ZIP $ZIPARGS $TMP.i.odg * */*)
     (cd $TMP.i/..; $ZIP $ZIPARGS `basename $TMP.i` `basename $TMP.i`.odg)
-    mv $TMP.i.odg $outfile
+    echodo mv $TMP.i.odg $outfile
     }
 
 #########################################################################
@@ -135,36 +136,34 @@ images()
         echo "Converting $src to $dname" >&2
 	index=`expr $index + 1`
 	case "$src~$cattext" in	# Stdout will end up with $cattext file
-	    *~pnm)		$CVT $src -.pnm | pamcut $PAMCUT_ARGS	;;
-	    *.ps~ps|*.pdf~ps)	$CVT $src -.ps				;;
-	    *.ps~pdf|*.pdf~pdf)	$CVT $src -.pdf				;;
-	    *~ps)		$CVT $src -.pnm | pamcut $PAMCUT_ARGS | \
-	    			    pnmtops $PNMTOPS_ARGS
+	    *~pnm)		echodo "$CVT -v$VERBOSITY $src -.pnm | pamcut $PAMCUT_ARGS"	;;
+	    *.ps~ps|*.pdf~ps)	echodo "$CVT -v$VERBOSITY $src -.ps"				;;
+	    *.ps~pdf|*.pdf~pdf)	echodo "$CVT -v$VERBOSITY $src -.pdf"				;;
+	    *~ps)		echodo "$CVT -v$VERBOSITY $src -.pnm | pamcut $PAMCUT_ARGS | pnmtops $PNMTOPS_ARGS"
 				;;
-	    *~pdf)		$CVT $src -.pnm | pamcut $PAMCUT_ARGS | \
-	    			    pnmtops $PNMTOPS_ARGS > $TMP.ps
-				ps2pdf $TMP.ps -
+	    *~pdf)		echodo "$CVT -v$VERBOSITY $src -.pnm | pamcut $PAMCUT_ARGS | pnmtops $PNMTOPS_ARGS > $TMP.ps"
+				echodo ps2pdf $TMP.ps -
 				;;
 	esac > $dname
 	converted_files="$converted_files $dname"
     done
 
     case $outfile in
-        *.ps)			gs $GS_ARGS -sDEVICE=pswrite \
+        *.ps)			echodo gs $GS_ARGS -sDEVICE=pswrite \
 				    -sOutputFile=$outfile $converted_files
 				    ;;
-#	*.pdf)			gs $GS_ARGS -sDEVICE=pdfwrite \
+#	*.pdf)			echodo gs $GS_ARGS -sDEVICE=pdfwrite \
 #				    -sOutputFile=$outfile $converted_files
 #				    ;;
-	*.pdf)			pdfunite $converted_files $outfile
+	*.pdf)			echodo pdfunite $converted_files $outfile
 				    ;;
-	*.odg)			gs $GS_ARGS -sDEVICE=pdfwrite \
+	*.odg)			echodo gs $GS_ARGS -sDEVICE=pdfwrite \
 				    -sOutputFile=$TMP.pdf $converted_files
-				pdfodg $TMP
+				echodo pdfodg $TMP
 				mv $TMP.odg $outfile
 				    ;;
 	*)			pnmcat $TBLAR_ARGS $converted_files | \
-				    $CVT -.pnm $outfile
+				    $CVT -v$VERBOSITY -.pnm $outfile
 				    ;;
     esac
     }
@@ -180,6 +179,7 @@ while [ "$#" -gt 0 ] ; do
 	-topbottom|-tb)	TBLAR_ARGS=-topbottom		;;
 	-leftright|-lr)	TBLAR_ARGS=-leftright		;;
 	-o)		outfile=$2; shift		;;
+	-v*)		VERBOSITY=1			;;
 	-*)		PAMCUT_ARGS="$PAMCUT_ARGS $1"	;;
 	*)		flist="$flist $1"		;;
     esac
