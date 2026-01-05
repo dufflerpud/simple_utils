@@ -169,17 +169,17 @@ sub set_screen_logic
     {
     if( $ARGS{screen} =~ /^[0-9][hml]$/ )
         {}
-    elsif( $ARGS{screen} =~ /^m([0-9]+)$/ )
-        { $ARGS{screen} = &command_result("screens -m$1 -N"); }
+    elsif( $ARGS{screen} =~ /^m[pv]*(\d+)$/ )
+        { $ARGS{screen} = &command_result("screens -MPV=$1 -show=Name"); }
     elsif( $ARGS{screen} =~ /^(X.+)$/ )
-        { $ARGS{screen} = &command_result("screens -p$1 -N"); }
+        { $ARGS{screen} = &command_result("screens -Port=$1 -show=Name"); }
     else
 	{ push(@problems,"Illegal screen definition:  $ARGS{screen}"); }
 
     &usage( @problems ) if( @problems );
 
-    open( INF, "screens -n$ARGS{screen} |" )
-	|| &fatal("Cannot run screens -n$ARGS{screen}:  $!");
+    open( INF, "screens -Name=$ARGS{screen} |" )
+	|| &fatal("Cannot run screens -Name=$ARGS{screen}:  $!");
     chomp($_=<INF>);	my @fieldnames	= split(/\s+/);
     chomp($_=<INF>);	my @values	= split(/\s+/);
     close( INF );
