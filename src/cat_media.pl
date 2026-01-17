@@ -201,7 +201,7 @@ else
     if( ($out_ext = &just_ext_of($ARGS{output_file})) eq "" )
         { push( @problems, "Unrecognized extension for output file (-o)." ); }
     elsif( ! ($out_type = $cpi_vars::EXT_TO_BASE_TYPE{$out_ext}) )
-        { push( @problems, "Unrecognized base type for output file (-o)." ); }
+        { push( @problems, "Unrecognized base type for output file from $out_ext." ); }
     elsif( &inlist($out_type,"postscript","ps","odg","pdf") )
         { $out_type = "page" }
     push( @problems, "$ARGS{output_file} already exists.  Specify -y to overwrite.")
