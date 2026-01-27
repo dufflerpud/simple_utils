@@ -25,9 +25,10 @@
 use strict;
 
 use lib "/usr/local/lib/perl";
-use cpi_make_from qw(convert_file);
-use cpi_file qw(fatal);
+use cpi_make_from qw(convert_file generate_rules);
+use cpi_file qw(read_file write_file fatal cleanup tempfile);
 use cpi_arguments qw(parse_arguments);
+use cpi_mime qw( read_mime_types );
 use cpi_vars;
 
 no warnings 'recursion';
@@ -94,10 +95,26 @@ else
     }
 
 #@files = @{ $ARGS{non_switches} };
+&usage("You must specify at least a destination file.") if( ! @files );
 my( $dest_file ) = pop( @files );
 $cpi_vars::VERBOSITY if(0);
 $cpi_vars::VERBOSITY = $ARGS{verbosity};
-&convert_file( $dest_file, @files );
-exit(0);
-
-exit($exit_stat||0);
+if( ! @files )
+    {
+    my $unknown_stdin = &tempfile(".unknown");
+    &write_file( $unknown_stdin, &read_file("/dev/stdin") );
+    my $mime_type = &read_file("file --mime '$unknown_stdin' |");
+    $mime_type = $1 if( $mime_type =~ /.*: ([^;]+); .*/ );
+    &fatal("Cannot determine mime type from stdin.") if( ! $mime_type );
+    &read_mime_types();
+    &fatal("Cannot determine extension from mime type [$mime_type].")
+        if( ! $cpi_vars::MIME_TYPE_TO_EXTS{$mime_type} );
+    my $ext = (sort keys %{$cpi_vars::MIME_TYPE_TO_EXTS{$mime_type}})[0];
+    @files[0] = &tempfile(".$ext");
+    rename( $unknown_stdin, $files[0] )
+        || &fatal("Cannot rename $unknown_stdin to $files[0]:  $!");
+    }
+&generate_rules( $dest_file, @files );
+&convert_file( $dest_file );
+#&convert_file( $dest_file, @files );
+&cleanup($exit_stat||0);
