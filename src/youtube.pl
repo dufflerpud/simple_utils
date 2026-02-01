@@ -67,10 +67,20 @@ sub usage
     &fatal( @_, "",
 	"Usage:  $PROG <possible arguments>","",
 	"where <possible arguments> is:",
-	"    -o <output file or directory>",
-	"    -y <youtube url piece>",
-	"    -i <input url>",
-	"    -a <album list>"
+	"\t-album <album file> (youtube.list)",
+	"\t-d ($YTDLP -q)",
+	"\t-title ($YTDLP --get-title)",
+	"\t-u ($YTDLP -g)",
+	"\t-converter (/usr/local/bin/nene)",
+	"\t-maximum <maximum number to download>",
+	"\t-mplayer <media player> (/bin/mplayer -really-quiet)",
+	"\t-trim <trim program> (/home/chris/bin/trim)",
+	"\t-ffmpegargs <args to hand to ffmpeg>",
+	"\t-output <output file>",
+	"\t-input <input URL>",
+	"\t-begin <time to start encoding>",
+	"\t-end <time to stop encoding>",
+	"\t-verbosity <how much debug output to write>"
 	);
     }
 
