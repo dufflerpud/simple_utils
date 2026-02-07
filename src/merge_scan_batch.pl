@@ -36,7 +36,7 @@ my @files;
     switches=>
 	{
 	"output_file"		=>	"",
-	"pamcut_arguments"	=>	"-top=3300",
+	"pamcut_arguments"	=>	"",
 	"flip"			=>	1,
 	"verbosity"		=>	0
 	}
@@ -111,7 +111,7 @@ while( @files )
     }
 @files = @new_files;
 
-push( @cmds, join(" ","cat_images -v=$ARGS{verbosity}",@files,"-o '$ARGS{output_file}'") );
+push( @cmds, join(" ","cat_media -v=$ARGS{verbosity}",@files,"-o '$ARGS{output_file}'") );
 push( @cmds, "rm -rf '$tmpdir'" ) if( $tmpdir );
 
 &usage(@problems) if( @problems );

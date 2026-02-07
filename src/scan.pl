@@ -55,7 +55,29 @@ sub usage
     &fatal(@_,"","Usage:  $cpi_vars::PROG <arg> <file>",
 	"where <file> is the resulting scanned file",
 	"and <arg> is of:",
-	"-verbosity=n" );
+	"	-output_file <output file>",
+	"	-device <device>",
+	"	-mode Color",
+	"	-resolution 600",
+	"	-host fs0",
+	"	-type epson2",
+	"	-ip scan0",
+	"	-sides 0",
+	"	-batch_mode 0",
+	"	-gs <arguments to gs>",
+	"	-papersize a3",
+	"	-1   Alias to -sides=1",
+	"	-2   Alias to -sides=2",
+	"	-a3  Alias to -papersize=a3",
+	"	-a4  Alias to -papersize=a4",
+	"	-afeed",
+	"	-scanimage_arguments <arguments to scanimage>",
+	"	-top <top border>",
+	"	-bottom <bottom border>",
+	"	-left <left border>",
+	"	-right <right border>",
+	"	-verbosity",
+	"	-debug");
     }
 
 #########################################################################
@@ -198,7 +220,7 @@ sub invoke_scanner
 			    "> $fn") == 0 )
 			{
 			&echodo("display $fn");
-			last;
+			# last;
 			}
 		}
 	    }
@@ -268,7 +290,7 @@ sub start_scanning
 	elsif( -f "$TMP/2/1001.$PAMEXT" ) 
 	    { $exit_status = &echodo("merge_scan_batch -verbosity=$ARGS{verbosity} $ARGS{gs} -o $outname $TMP/*"); }
 	elsif( -f "$TMP/1/1002.$PAMEXT" )
-	    { $exit_status = &echodo("cat_images -verbosity=$ARGS{verbosity} $ARGS{gs} -o $outname $TMP/*/*"); }
+	    { $exit_status = &echodo("cat_media -verbosity=$ARGS{verbosity} $ARGS{gs} -o $outname $TMP/*/*"); }
 	else
 	    { $exit_status = &convert_file( "$TMP/1/1001.$PAMEXT", $outname ); }
 	}
@@ -318,6 +340,8 @@ $ARGS{trim_arguments} =
 	map { "-$_=$ARGS{$_}" }
 	    grep( $ARGS{$_} ne "", "top", "bottom", "left", "right" ) );
 $ARGS{gs}.=($ARGS{gs} ? " " : "") . "-sPAPERSIZE=$ARGS{papersize}" if( $ARGS{papersize} );
+push( @problems, "$ARGS{output_file} already exists, aborting.")
+    if( -e $ARGS{output_file} );
 $cpi_vars::VERBOSITY = $ARGS{verbosity};
 
 &usage(@problems) if( @problems );
@@ -333,6 +357,6 @@ elsif( $ARGS{output_file} =~ /%/ )
 else   
     { &start_scanning($ARGS{output_file}); }
 
-&echodo("rm -rf $TMP") if( $exit_status == 0 );
+#&echodo("rm -rf $TMP") if( $exit_status == 0 );
 
 &cleanup( $exit_status );

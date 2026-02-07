@@ -163,6 +163,21 @@ $logic_for{default} = sub
     };
 
 #########################################################################
+#	Do a simple guess on the basic type of an extension by looking	#
+#	it up in a table and hard coding some values.			#
+#########################################################################
+sub ext_to_base_type
+    {
+    my ( $ext ) = @_;
+    my $ret;
+    if( $ret = $cpi_vars::EXT_TO_BASE_TYPE{$ext} )
+	{
+	$ret = "page" if( &inlist($ret,"postscript","ps","odg","pdf") );
+	}
+    return $ret;
+    }
+
+#########################################################################
 #	Main								#
 #########################################################################
 %ARGS = &parse_arguments({
@@ -200,42 +215,37 @@ else
     {
     if( ($out_ext = &just_ext_of($ARGS{output_file})) eq "" )
         { push( @problems, "Unrecognized extension for output file (-o)." ); }
-    elsif( ! ($out_type = $cpi_vars::EXT_TO_BASE_TYPE{$out_ext}) )
+    elsif( ! ($out_type = &ext_to_base_type($out_ext) ) )
         { push( @problems, "Unrecognized base type for output file from $out_ext." ); }
-    elsif( &inlist($out_type,"postscript","ps","odg","pdf") )
-        { $out_type = "page" }
     push( @problems, "$ARGS{output_file} already exists.  Specify -y to overwrite.")
     	if( -e $ARGS{output_file} && ! $ARGS{yes} );
     push(@problems, "Do not know how to concatinate ".&plural($out_type).".")
 	if( $out_type && ! $logic_for{$out_type} );
     }
 
+print STDERR "out type = [$out_type]\n";
 foreach my $input_file ( @input_files )
     {
     my $in_ext = &just_ext_of( $input_file );
     if( ! $in_ext )
         { push( @problems, "Unrecognized extension for $input_file." ); }
-    else
+    elsif( my $in_type = &ext_to_base_type($in_ext) )
 	{
-	my $in_type = $cpi_vars::EXT_TO_BASE_TYPE{$in_ext};
-	if( ! $in_type  )
-            { push( @problems, "Unrecognized base type for $input_file." ); }
-	if( $out_type && $in_type )
+	if( $out_type eq $in_type )
+	    {}
+	elsif( $out_type eq "page" && $in_type eq "image" )
+	    {}
+	elsif( $out_type eq "gif" && $in_type eq "image" )
+	    {}
+	else
 	    {
-	    if( $out_type eq $in_type )
-	        {}
-	    elsif( $out_type eq "page" && $in_type eq "image" )
-	        {}
-	    elsif( $out_type eq "gif" && $in_type eq "image" )
-		{}
-	    else
-		{
-		push( @problems,
-		    "Base type for $input_file ($in_type)"
-		    . " does not match $ARGS{output_file} ($out_type)." );
-		}
+	    push( @problems,
+		"Base type for $input_file ($in_type)"
+		. " does not match $ARGS{output_file} ($out_type)." );
 	    }
 	}
+    else
+	{ push( @problems, "Unrecognized base type for $input_file." ); }
     }
 
 &usage(@problems) if(@problems);
