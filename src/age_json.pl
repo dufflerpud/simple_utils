@@ -11,7 +11,6 @@ use cpi_cgi qw( older_json );
 
 our %ARGS;
 our $exit_stat = 0;
-my $ctr = 0;
 
 #########################################################################
 #	Print an error, usage message and die.				#
