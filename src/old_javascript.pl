@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/perl -w
 #
-#indx#	dnf_upgrade.sh - Upgrade to next version of Fedora
+#indx#	old_javascript.pl - Fix javascript to run on older engines
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,60 +28,48 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	dnf_upgrade.sh - Upgrade to next version of Fedora
+#doc#	old_javascript.pl - Fix javascript to run on old iPads due to syntax
+#doc#	"for( const x of" and "for( const x in" syntax newer than those
+#doc#	machines.
 ########################################################################
 
-PROG=`basename $0`
-TMP=/tmp/$PROG		# or /tmp/$PROG.$$
+use strict;
+
+use lib "/usr/local/lib/perl";
+
+use cpi_file qw( fatal read_file write_file cleanup );
+use cpi_arguments qw( parse_arguments );
+use cpi_compress_integer qw( compress_integer );
+use cpi_cgi qw( older_json );
+
+our %ARGS;
+our $exit_stat = 0;
 
 #########################################################################
-#	Print usage message and exit.					#
+#	Print an error, usage message and die.				#
 #########################################################################
-usage()
+sub usage
     {
-    echo "$*" | tr '~' '\012'
-    echo "Usage:  $PROG [<release>]"
-    exit 1
-    }
-
-#########################################################################
-#	Print command and then execute it.				#
-#########################################################################
-echodo()
-    {
-    echo "+ $*"
-    eval "$@"
+    &fatal( @_,
+	"Usage:  $cpi_vars::PROG -i <input file> -o <output_file>"
+	);
     }
 
 #########################################################################
 #	Main								#
 #########################################################################
 
-id | grep -q '^uid=0' || exec sudo $0 "$*"
+%ARGS = &parse_arguments( {
+    switches=>
+	{
+	input_file	=> "/dev/stdin",
+	output_file	=> "/dev/stdout",
+	}
+    } );
 
-# Parse arguments
+&write_file(
+    $ARGS{output_file},
+    &older_json(
+	&read_file( $ARGS{input_file} ) ) );
 
-OLDREL=`awk '{print $3}' /etc/fedora-release`
-NXTREL=`expr $OLDREL + 1`
-
-doreboot=false
-while [ "$#" -gt 0 ] ; do
-    case "$1" in
-	[0-9]*)	[ -z "$REL" ] || PROBLEMS="${PROBLEMS}Multiple releases specified.~"
-		REL=$1
-		;;
-	-r)	doreboot=true					;;
-	*)	PROBLEMS="${PROBLEMS}Unknown argument [$1].~"	;;
-    esac
-    shift
-done
-REL=${REL:-$NXTREL}
-
-[ -n "$PROBLEMS" ] && usage "$PROBLEMS"
-
-echodo dnf -y update
-echodo dnf upgrade --refresh
-echodo dnf install dnf-plugin-system-upgrade
-echodo dnf -y system-upgrade download --releasever=$REL
-
-$doreboot && echodo dnf system-upgrade reboot
+&cleanup( $exit_stat );
