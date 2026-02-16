@@ -37,14 +37,10 @@ also use the [common] Makefiles to build and directories to login, etc.
 **[words_with](#dt_86y8HNXHr)**:  Show words using specified letters<br>
 **[youtube](#dt_86y8HNXHu)**:  Convenient interface yt-dlp to download youtube videos<br>
 <hr>
-\t#<a name=$tag>**$filename_base**</a>",
-\t$doc_text"
 # <a name='dt_86y8HF8yI'>**add_header**</a>:  Add Index entry, RCS ID, copyright, preliminary
 history & documentation to source.  More complex than at first
 blush because it needs to figure out comment convention so that new
 header doesn't change semantics of program.
-\t# <a name=$tag>**$filename_base**</a>",
-\t$doc_text"
 # <a name='dt_86y8HF8yL'>**anagram**</a>:  Print anagrams of word specified in argument.
 **Uses system english dictionary (/usr/share/dict/words).
 # <a name='dt_86y8HJL7Q'>**cat_media**</a>:  Concatinates different types of files (movies, pics,
@@ -60,14 +56,12 @@ header doesn't change semantics of program.
 **run interactively.
 # <a name='dt_86y8HJL7c'>**doc_sep**</a>:  Filter out all but the specified headers for documentation.
 **Can also be used to remove documentation to leave just source
-",
 # <a name='dt_86y8HJL7f'>**embed_images**</a>:  Convert image URLs to the data they are pointing to.
 **Useful for creating html that doesn't require internet connection.
 # <a name='dt_86y8HJL7i'>**fix_header**</a>:  Add Index entry, RCS ID, copyright, preliminary
 history & documentation to source.  More complex than at first
 blush because it needs to figure out comment convention so that new
 header doesn't change semantics of program.
-\s*)\*+([^\s\*]+)\*+:[\s\-]*(.*?)$/ )
 # <a name='dt_86y8HJL7l'>**host_of_ssh**</a>:  Print info about inbound SSH connections.
 **Filters output of lsof.
 # <a name='dt_86y8HJL7o'>**indent_json**</a>:  Output json in a semi-readable (indented) format.
