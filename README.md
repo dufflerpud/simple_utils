@@ -4,128 +4,203 @@ of the perl programs use the [cpi] perl library,  Many of the perl programs
 also use the [common] Makefiles to build and directories to login, etc.
 <hr>
 
-**[add_header](#dt_86y8HF8yI)**:  Add Index, RCS ID, copyright, initial histories & doc to source<br>
-**[anagram](#dt_86y8HF8yL)**:  Print anagrams of word specified in argument<br>
-**[cat_media](#dt_86y8HJL7Q)**:  Concatinates different types of files (movies, pics, audio etc)<br>
-**[copydb](#dt_86y8HJL7T)**:  Copy data from gdbm or perl objects to another db format<br>
-**[count_domains](#dt_86y8HJL7W)**:  Read ip log file & count packets by domain<br>
-**[descape](#dt_86y8HJL7Z)**:  Remove terminal control escape sequences from stdin<br>
-**[doc_sep](#dt_86y8HJL7c)**:  Filter out all but the specified headers for documentation<br>
-**[embed_images](#dt_86y8HJL7f)**:  Convert image URLs to the data they are pointing to<br>
-**[fix_header](#dt_86y8HJL7i)**:  Add Index, RCS ID, copyright, initial histories & doc to source<br>
-**[host_of_ssh](#dt_86y8HJL7l)**:  Print info about inbound SSH connections<br>
-**[indent_json](#dt_86y8HJL7o)**:  Output json in a semi-readable (indented) format<br>
-**[merge_scan_batch](#dt_86y8HJL7r)**:  Collect multiple pages into a single document<br>
-**[mixtape](#dt_86y8HJL7u)**:  Create collections, or play randomly from collection<br>
-**[nene](#dt_86y8HJL7x)**:  Copy data from any ext to any ext (converting as required)<br>
-**[old_javascript](#dt_86y8HJL80)**:  Fix javascript to run on older engines<br>
-**[radix](#dt_86y8HJL83)**:  Find all radices where number has specified digits<br>
-**[remind](#dt_86y8HJL86)**:  Send e-mail reminders based on user's .remind<br>
-**[rnh](#dt_86y8HJL89)**:  Simple file to manipulate old UNH runoff files.<br>
-**[sanifile](#dt_86y8HJL8C)**:  Fix filenames to be UNIX friendly and convert to standard types<br>
-**[scan](#dt_86y8HJL8F)**:  A friendly front end to scanimage to scan documents<br>
-**[screens](#dt_86y8HJL8I)**:  Obtain info about connected monitors<br>
-**[seconds_to_daytime](#dt_86y8HJL8L)**:  Convert seconds since epoch to readable format<br>
-**[send_text](#dt_86y8HNXHQ)**:  Send a text to specified phone by e-mail to special address<br>
-**[setup_access_point](#dt_86y8HNXHT)**:  Configure local WIFI card to be access point<br>
-**[show](#dt_86y8HNXHW)**:  Play specified media on local display/speakers<br>
-**[square_icon](#dt_86y8HNXHZ)**:  Create an icon suitable for iPhone based on supplied text<br>
-**[sudoinstall](#dt_86y8HNXHc)**:  Try to install something.  I fail, sudo and try again.<br>
-**[sumdir](#dt_86y8HNXHf)**:  Create a file containing checksums of files in directory<br>
-**[tmog](#dt_86y8HNXHi)**:  Type, Mode, Owner and Group - create specified file<br>
-**[unique_name](#dt_86y8HNXHl)**:  Fill in unique digits to create a filename<br>
-**[upend](#dt_86y8HNXHo)**:  Print lines with text reversed within the line<br>
-**[words_with](#dt_86y8HNXHr)**:  Show words using specified letters<br>
-**[youtube](#dt_86y8HNXHu)**:  Convenient interface yt-dlp to download youtube videos<br>
+<table width=90% style='table-collapse:collapse'>
+<tr><th align=left><a href='#dt_86yWmyIFC'>add_header</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFD'>anagram</a></th><td>Print anagrams of word specified in argument</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFE'>cat_media</a></th><td>Concatinates different types of files (movies, pics, audio etc)</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFF'>copydb</a></th><td>Copy data from gdbm or perl objects to another db format</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFG'>count_domains</a></th><td>Read ip log file & count packets by domain</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFH'>descape</a></th><td>Remove terminal control escape sequences from stdin</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFI'>doc_sep</a></th><td>Filter out all but the specified headers for documentation</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFJ'>embed_images</a></th><td>Convert image URLs to the data they are pointing to</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFK'>[fix_header](#dt_86yMzJIdb)</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFL'>host_of_ssh</a></th><td>Print info about inbound SSH connections</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFM'>indent_json</a></th><td>Output json in a semi-readable (indented) format</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFN'>merge_scan_batch</a></th><td>Collect multiple pages into a single document</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFO'>mixtape</a></th><td>Create collections, or play randomly from collection</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFP'>nene</a></th><td>Copy data from any ext to any ext (converting as required)</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFQ'>old_javascript</a></th><td>Fix javascript to run on older engines</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFR'>radix</a></th><td>Find all radices where number has specified digits</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFS'>remind</a></th><td>Send e-mail reminders based on user's .remind</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFT'>rnh</a></th><td>Simple file to manipulate old UNH runoff files.</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFU'>sanifile</a></th><td>Fix filenames to be UNIX friendly and convert to standard types</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFV'>scan</a></th><td>A friendly front end to scanimage to scan documents</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFW'>screens</a></th><td>Obtain info about connected monitors</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFX'>seconds_to_daytime</a></th><td>Convert seconds since epoch to readable format</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFY'>send_text</a></th><td>Send a text to specified phone by e-mail to special address</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFZ'>setup_access_point</a></th><td>Configure local WIFI card to be access point</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFa'>show</a></th><td>Play specified media on local display/speakers</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFb'>square_icon</a></th><td>Create an icon suitable for iPhone based on supplied text</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFc'>sudoinstall</a></th><td>Try to install something.  I fail, sudo and try again.</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFd'>sumdir</a></th><td>Create a file containing checksums of files in directory</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFe'>tmog</a></th><td>Type, Mode, Owner and Group - create specified file</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFf'>unique_name</a></th><td>Fill in unique digits to create a filename</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFg'>upend</a></th><td>Print lines with text reversed within the line</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFh'>words_with</a></th><td>Show words using specified letters</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFi'>add_header</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
+<tr><th align=left><a href='#dt_86yWmyIFj'>youtube</a></th><td>Convenient interface yt-dlp to download youtube videos</td></tr>
+</table>
 
 <hr>
 
-# <a name='dt_86y8HF8yI'>**add_header**</a>:  Add Index entry, RCS ID, copyright, preliminary
+
+# <a id='dt_86yWmyIFC'>add_header</a>
+Add Index entry, RCS ID, copyright, preliminary
 history & documentation to source.  More complex than at first
 blush because it needs to figure out comment convention so that new
 header doesn't change semantics of program.
-# <a name='dt_86y8HF8yL'>**anagram**</a>:  Print anagrams of word specified in argument.
-**Uses system english dictionary (/usr/share/dict/words).
-# <a name='dt_86y8HJL7Q'>**cat_media**</a>:  Concatinates different types of files (movies, pics,
-**audio etc).  Complex because videos may not be same aspect ratio,
-**audios may have different sample rates, etc.
-# <a name='dt_86y8HJL7T'>**copydb**</a>:  Copy data from gdbm or perl objects into another
-**format. Easily extensible to copy SQL or other database formats
-**#as cpi_db is extended.
-# <a name='dt_86y8HJL7W'>**count_domains**</a>:  Read ip log file & count packets by domain
-**Information assumed to be on standard in put.
-# <a name='dt_86y8HJL7Z'>**descape**</a>:  Remove terminal control escape sequences from stdin.
-**Useful for analyzing output from software that thinks it is being
-**run interactively.
-# <a name='dt_86y8HJL7c'>**doc_sep**</a>:  Filter out all but the specified headers for documentation.
-**Can also be used to remove documentation to leave just source
-# <a name='dt_86y8HJL7f'>**embed_images**</a>:  Convert image URLs to the data they are pointing to.
-**Useful for creating html that doesn't require internet connection.
-# <a name='dt_86y8HJL7i'>**fix_header**</a>:  Add Index entry, RCS ID, copyright, preliminary
+
+# <a id='dt_86yWmyIFD'>anagram</a>
+Print anagrams of word specified in argument.
+Uses system english dictionary (/usr/share/dict/words).
+
+# <a id='dt_86yWmyIFE'>cat_media</a>
+Concatinates different types of files (movies, pics,
+audio etc).  Complex because videos may not be same aspect ratio,
+audios may have different sample rates, etc.
+
+# <a id='dt_86yWmyIFF'>copydb</a>
+Copy data from gdbm or perl objects into another
+format. Easily extensible to copy SQL or other database formats
+#as cpi_db is extended.
+
+# <a id='dt_86yWmyIFG'>count_domains</a>
+Read ip log file & count packets by domain
+Information assumed to be on standard in put.
+
+# <a id='dt_86yWmyIFH'>descape</a>
+Remove terminal control escape sequences from stdin.
+Useful for analyzing output from software that thinks it is being
+run interactively.
+
+# <a id='dt_86yWmyIFI'>doc_sep</a>
+Filter out all but the specified headers for documentation.
+Can also be used to remove documentation to leave just source
+
+# <a id='dt_86yWmyIFJ'>embed_images</a>
+Convert image URLs to the data they are pointing to.
+Useful for creating html that doesn't require internet connection.
+
+# <a id='dt_86yWmyIFK'>[fix_header](#dt_86yMzJIdb)</a>
+# <a name='dt_86yMzJIdb'>**fix_header**</a>:  Add Index entry, RCS ID, copyright, preliminary
 history & documentation to source.  More complex than at first
 blush because it needs to figure out comment convention so that new
 header doesn't change semantics of program.
-# <a name='dt_86y8HJL7l'>**host_of_ssh**</a>:  Print info about inbound SSH connections.
-**Filters output of lsof.
-# <a name='dt_86y8HJL7o'>**indent_json**</a>:  Output json in a semi-readable (indented) format.
-**Note that there are more standard libraries for doing this
-**but the developer wasn't wild about the format.
-# <a name='dt_86y8HJL7r'>**merge_scan_batch**</a>:  Collect multiple pages into a single document
-**Generally takes a bunch of .pnm files to create a .pdf files, but
-**input can be any single-page-images.  Smart enough to order PDF
-**pages based on images scanned from two sided documents.
-# <a name='dt_86y8HJL7u'>**mixtape**</a>:  Create music collections, or play randomly from collection
-**or simply play random music from a specified directory.
-# <a name='dt_86y8HJL7x'>**nene**</a>:  Copy data from any ext to any ext (converting as required)
-**More complex than you might think.  For instance, if you nene a
-**.txt file to a .mp3 file, you'll get the words in the .txt file
-**in spoken English.  If you nene from a movie to a sound file,
-**you'll just get the sound track.  Smarter than your average bear
-**but frequently wrong.
-# <a name='dt_86y8HJL80'>**old_javascript**</a>:  Fix javascript to run on old iPads due to syntax
-**"for( const x of" and "for( const x in" syntax newer than those
-**machines.
-# <a name='dt_86y8HJL83'>**radix**</a>:  Find all radices where number has specified digits
-**Radices from 2 to 62 checked.
-# <a name='dt_86y8HJL86'>**remind**</a>:  Send e-mail reminders based on user's .remind
-**Invoked once a day in the wee hours of the morning.
-#Remind - Software to send e-mail reminders according to dated entries
-# <a name='dt_86y8HJL89'>**rnh**</a>:  Simple file to manipulate old UNH runoff files.
-# <a name='dt_86y8HJL8C'>**sanifile**</a>:  Fix filenames to be UNIX friendly and convert to standard types
-**For instance, the standard movie is quicktime .mov.
-**The standard for still pics are jpegs.
-**The standard for still audo is mp3, etc.
-**Convenient to apply to directories to quickly make sense of them.
-# <a name='dt_86y8HJL8F'>**scan**</a>:  A friendly front end to scanimage to scan documents
-**Uses merge_scan_batch and cat_media to construct pdf files.
-# <a name='dt_86y8HJL8I'>**screens**</a>:  Obtain info about connected monitors.
-**Interfaces with X via xrandr.
-# <a name='dt_86y8HJL8L'>**seconds_to_daytime**</a>:  Convert seconds since epoch to readable format
-# <a name='dt_86y8HNXHQ'>**send_text**</a>:  Send a text to specified phone by e-mail to special address
-**Really just a front end to e-mail.
-# <a name='dt_86y8HNXHT'>**setup_access_point**</a>:  Configure local WIFI card to be access point
-# <a name='dt_86y8HNXHW'>**show**</a>:  Play specified media on local display/speakers
-# <a name='dt_86y8HNXHZ'>**square_icon**</a>:  Create an icon suitable for iPhone based on supplied text
-# <a name='dt_86y8HNXHc'>**sudoinstall**</a>:  Try to install something.  I fail, sudo and try again.
-**A utility to run the install command, usually used by Makefile.	#
-**Attempts the install first, and if it fails, does the same	#
-**command under sudo.  Prevents user from having to become root	#
-**just to do an install (all they need to do is type in their	#
-**password).  If Makefile is already running as root		#
-**presumably the install won't fail, so we don't do a sudo.	#
-# <a name='dt_86y8HNXHf'>**sumdir**</a>:  Create a file containing checksums of files in directory
-# <a name='dt_86y8HNXHi'>**tmog**</a>:  Type, Mode, Owner and Group - create specified file
-**Similar to linux install utility but a lot faster to type
-**because if can look at the arguments to know whether they apply
-**to the file type, its mode etc.
-# <a name='dt_86y8HNXHl'>**unique_name**</a>:  Fill in unique digits to create a filename
-**Create a unique name for a file based on % notation in the
-**supplied name.
-# <a name='dt_86y8HNXHo'>**upend**</a>:  Print lines with text reversed within the line
-# <a name='dt_86y8HNXHr'>**words_with**</a>:  Show words using specified letters
-# <a name='dt_86y8HNXHu'>**youtube**</a>:  Convenient interface yt-dlp to download youtube videos
-**In particular, maintain a list of files (youtube.list) in CWD
-**with media and where it came from.
+
+# <a id='dt_86yWmyIFL'>host_of_ssh</a>
+Print info about inbound SSH connections.
+Filters output of lsof.
+
+# <a id='dt_86yWmyIFM'>indent_json</a>
+Output json in a semi-readable (indented) format.
+Note that there are more standard libraries for doing this
+but the developer wasn't wild about the format.
+
+# <a id='dt_86yWmyIFN'>merge_scan_batch</a>
+Collect multiple pages into a single document
+Generally takes a bunch of .pnm files to create a .pdf files, but
+page-images.  Smart enough to order PDF
+pages based on images scanned from two sided documents.
+
+# <a id='dt_86yWmyIFO'>mixtape</a>
+Create music collections, or play randomly from collection
+or simply play random music from a specified directory.
+
+# <a id='dt_86yWmyIFP'>nene</a>
+Copy data from any ext to any ext (converting as required)
+More complex than you might think.  For instance, if you nene a
+.txt file to a .mp3 file, you'll get the words in the .txt file
+in spoken English.  If you nene from a movie to a sound file,
+you'll just get the sound track.  Smarter than your average bear
+but frequently wrong.
+
+# <a id='dt_86yWmyIFQ'>old_javascript</a>
+Fix javascript to run on old iPads due to syntax
+"for( const x of" and "for( const x in" syntax newer than those
+machines.
+
+# <a id='dt_86yWmyIFR'>radix</a>
+Find all radices where number has specified digits
+Radices from 2 to 62 checked.
+
+# <a id='dt_86yWmyIFS'>remind</a>
+Send e-mail reminders based on user's .remind
+Invoked once a day in the wee hours of the morning.
+Software to send e-mail reminders according to dated entries
+
+# <a id='dt_86yWmyIFT'>rnh</a>
+Simple file to manipulate old UNH runoff files.
+
+# <a id='dt_86yWmyIFU'>sanifile</a>
+Fix filenames to be UNIX friendly and convert to standard types
+For instance, the standard movie is quicktime .mov.
+The standard for still pics are jpegs.
+The standard for still audo is mp3, etc.
+Convenient to apply to directories to quickly make sense of them.
+
+# <a id='dt_86yWmyIFV'>scan</a>
+A friendly front end to scanimage to scan documents
+Uses merge_scan_batch and cat_media to construct pdf files.
+
+# <a id='dt_86yWmyIFW'>screens</a>
+Obtain info about connected monitors.
+Interfaces with X via xrandr.
+
+# <a id='dt_86yWmyIFX'>seconds_to_daytime</a>
+Convert seconds since epoch to readable format
+
+# <a id='dt_86yWmyIFY'>send_text</a>
+Send a text to specified phone by e-mail to special address
+mail.
+
+# <a id='dt_86yWmyIFZ'>setup_access_point</a>
+Configure local WIFI card to be access point
+
+# <a id='dt_86yWmyIFa'>show</a>
+Play specified media on local display/speakers
+
+# <a id='dt_86yWmyIFb'>square_icon</a>
+Create an icon suitable for iPhone based on supplied text
+
+# <a id='dt_86yWmyIFc'>sudoinstall</a>
+Try to install something.  I fail, sudo and try again.
+A utility to run the install command, usually used by Makefile.	#
+Attempts the install first, and if it fails, does the same	#
+command under sudo.  Prevents user from having to become root	#
+just to do an install (all they need to do is type in their	#
+password).  If Makefile is already running as root		#
+presumably the install won't fail, so we don't do a sudo.	#
+
+# <a id='dt_86yWmyIFd'>sumdir</a>
+Create a file containing checksums of files in directory
+
+# <a id='dt_86yWmyIFe'>tmog</a>
+Type, Mode, Owner and Group - create specified file
+Similar to linux install utility but a lot faster to type
+because if can look at the arguments to know whether they apply
+to the file type, its mode etc.
+
+# <a id='dt_86yWmyIFf'>unique_name</a>
+Fill in unique digits to create a filename
+Create a unique name for a file based on % notation in the
+supplied name.
+
+# <a id='dt_86yWmyIFg'>upend</a>
+Print lines with text reversed within the line
+
+# <a id='dt_86yWmyIFh'>words_with</a>
+Show words using specified letters
+
+# <a id='dt_86yWmyIFi'>add_header</a>
+Add Index entry, RCS ID, copyright, preliminary
+history & documentation to source.  More complex than at first
+blush because it needs to figure out comment convention so that new
+header doesn't change semantics of program.
+
+# <a id='dt_86yWmyIFj'>youtube</a>
+Convenient interface yt-dlp to download youtube videos
+In particular, maintain a list of files (youtube.list) in CWD
+with media and where it came from.
 
 <hr>
 
