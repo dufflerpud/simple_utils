@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	add_header.pl - Add Index, RCS ID, copyright, initial histories & doc to source
+#indx#	add_header - Add Index, RCS ID, copyright, initial histories & doc to source
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -26,17 +26,13 @@
 #@HDR@	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #@HDR@	OTHER DEALINGS IN THE SOFTWARE.
 #
-#hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
+#hist#	2024-04-20 - c.m.caldwell@alumni.unh.edu - Created
+#hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Standard header
 ########################################################################
-#doc#	add_header.pl - Add Index entry, RCS ID, copyright, preliminary
+#doc#	add_header - Add Index entry, RCS ID, copyright, preliminary
 #doc#	history & documentation to source.  More complex than at first
 #doc#	blush because it needs to figure out comment convention so that new
 #doc#	header doesn't change semantics of program.
-########################################################################
-########################################################################
-#	Easily add a header with RCS and copyright strings.
-#
-#	2024-04-20 - c.m.caldwell@alumni.unh.edu - Created
 ########################################################################
 
 use strict;
@@ -46,6 +42,7 @@ use cpi_file qw( fatal echodo read_file write_file cleanup tempfile );
 use cpi_arguments qw( parse_arguments );
 use cpi_filename qw( just_ext_of basename );
 use cpi_inlist qw( inlist );
+use cpi_compress_integer qw( compress_integer );
 use cpi_vars;
 
 # Put constants here
@@ -56,6 +53,8 @@ my $TODAY		= `date '+%Y-%m-%d'`;		chomp($TODAY);
 my $YEAR		= `date '+%Y'`;			chomp($YEAR);
 my $HDR_STRING		= "\@HDR\@";
 my $SCREEN_WIDTH	= 72;
+
+my $unique_marker_int	= time()*1000000+$$;
 
 our %ONLY_ONE_DEFAULTS =
     (
@@ -149,6 +148,8 @@ sub do_one_file
     my @ret;
     push( @ret, shift(@lines) ) if( $lines[0]=~/^#!/ || $lines[0]=~/<script/ );
 
+    my $tag = "doctag_".&compress_integer($unique_marker_int++);
+
     my $prologue = "";
     my $epilogue = "";
     my $horiz_bar = "";
@@ -223,10 +224,17 @@ sub do_one_file
     push( @ret, $prologue ) if( $prologue );
 
     my $filename_base = &basename($filename);
-    push( @ret,
-	$c,
-	"${c}indx#\t$filename_base - (VERY brief explanation of what this file is/does)",
-	) if( $ARGS{index} );
+    if( $ARGS{index} )
+	{
+	my $index_text =
+	    ( $ARGS{index} eq "1"
+	    ? "(VERY brief explanation of what this file is/does)"
+	    : $ARGS{index} );
+	push( @ret,
+	    $c,
+	    "${c}indx#\t$filename_base - $index_text",
+	    );
+	}
 
     push( @ret, "$c$HDR_STRING\t$id" );
 
@@ -286,11 +294,17 @@ EOF
 	"${c}hist#\t$TODAY - $ARGS{email_address} - Created" )
 	if( $ARGS{history} );
 
-    push( @ret,
+    if( $ARGS{documentation} )
+	{
+	my $doc_text =
+	    ( $ARGS{documentation} eq "1"
+	    ? "(Less brief explanation of what this file is/does)"
+	    : $ARGS{documentation} );
+	push( @ret,
 $horiz_bar,
-"${c}doc#\t$filename_base - (Replace with more full explanation of what this file is or does",
-"${c}doc#\tspread across multiple lines)"
-    ) if( $ARGS{documentation} );
+"${c}doc#\t$doc_text"
+	    );
+	}
 
     push( @ret, $epilogue );
 

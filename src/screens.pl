@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	screens.pl - Obtain info about connected monitors
+#indx#	screens - Obtain info about connected monitors
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	screens.pl - Obtain info about connected monitors.
+#doc#	screens - Obtain info about connected monitors.
 #doc#	Interfaces with X via xrandr.
 ########################################################################
 

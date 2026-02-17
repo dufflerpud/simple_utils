@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	cat_images.sh - Obsoleted by cat_media - only for images
+#indx#	cat_images - Obsoleted by cat_media - only for images
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	cat_images.sh - Obsoleted by cat_media - only for images
+#doc#	cat_images - Obsoleted by cat_media - only for images
 ########################################################################
 
 PROG=`basename $0`

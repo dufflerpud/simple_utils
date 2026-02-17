@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	epr.sh - Obsolete script for printing using Ghostscript and ftp
+#indx#	epr - Obsolete script for printing using Ghostscript and ftp
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	epr.sh - Obsolete script for printing using Ghostscript and ftp
+#doc#	epr - Obsolete script for printing using Ghostscript and ftp
 ########################################################################
 
 TMP=/tmp/epr.$$

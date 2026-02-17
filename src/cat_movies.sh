@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	cat_movies.sh - Obsoleted by cat_media - Only for movies
+#indx#	cat_movies - Obsoleted by cat_media - Only for movies
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	cat_movies.sh - Obsoleted by cat_media - Only for movies
+#doc#	cat_movies - Obsoleted by cat_media - Only for movies
 ########################################################################
 
 PROG=`basename $0`

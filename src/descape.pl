@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-#indx#	descape.pl - Remove terminal control escape sequences from stdin
+#indx#	descape - Remove terminal control escape sequences from stdin
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	descape.pl - Remove terminal control escape sequences from stdin.
+#doc#	descape - Remove terminal control escape sequences from stdin.
 #doc#	Useful for analyzing output from software that thinks it is being
 #doc#	run interactively.
 ########################################################################

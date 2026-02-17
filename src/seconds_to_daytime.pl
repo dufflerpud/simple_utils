@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	seconds_to_daytime.pl - Convert seconds since epoch to readable format
+#indx#	seconds_to_daytime - Convert seconds since epoch to readable format
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	seconds_to_daytime.pl - Convert seconds since epoch to readable format
+#doc#	seconds_to_daytime - Convert seconds since epoch to readable format
 ########################################################################
 
 use strict;

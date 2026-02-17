@@ -1,6 +1,6 @@
 #!/bin/sh -x
 #
-#indx#	toodg.sh - Convert pdf files to odg
+#indx#	toodg - Convert pdf files to odg
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	toodg.sh - Convert pdf files to odg
+#doc#	toodg - Convert pdf files to odg
 ########################################################################
 
 #########################################################################

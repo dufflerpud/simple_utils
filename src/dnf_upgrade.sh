@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	dnf_upgrade.sh - Upgrade to next version of Fedora
+#indx#	dnf_upgrade - Upgrade to next version of Fedora
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	dnf_upgrade.sh - Upgrade to next version of Fedora
+#doc#	dnf_upgrade - Upgrade to next version of Fedora
 ########################################################################
 
 PROG=`basename $0`

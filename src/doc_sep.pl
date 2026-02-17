@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	doc_sep.pl - Filter out all but the specified headers for documentation
+#indx#	doc_sep - Filter out all but the specified headers for documentation
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	doc_sep.pl - Filter out all but the specified headers for documentation.
+#doc#	doc_sep - Filter out all but the specified headers for documentation.
 #doc#	Can also be used to remove documentation to leave just source
 ########################################################################
 
@@ -36,13 +36,17 @@ use strict;
 
 use lib "/usr/local/lib/perl";
 
-use cpi_file qw( fatal read_file write_lines cleanup );
+use cpi_file qw( fatal read_file write_lines fqfiles_in cleanup );
 use cpi_arguments qw( parse_arguments );
+use cpi_filename qw( distill_filename glob_from );
+use cpi_compress_integer qw( compress_integer );
 use cpi_cgi qw( older_json );
 
 our %ARGS;
 our $exit_stat = 0;
 our @files;
+
+my $tag_ind = time() * 1000000 + $$;
 
 #########################################################################
 #	Print an error, usage message and die.				#
@@ -55,25 +59,58 @@ sub usage
     }
 
 #########################################################################
-#	Sift through file keeping only the documentation lines or	#
-#	removing those lines.						#
+#	Handle includes							#
 #########################################################################
-sub filter
+sub do_include
     {
-    my( $str ) = @_;
-    my @lines;
-    foreach my $ln ( split(/\n/ms,$str) )
+    my( $curdir_spec, $filename_spec, $indexp, $docp ) = @_;
+    my $tag;
+    my $current_topic;
+    #print STDERR "curdir=$curdir filename=$filename\n";
+    foreach my $filename ( glob($filename_spec) )
 	{
-	if( $ln =~ /^$ARGS{filter}(.*)/ )
-	    {
-	    push( @lines, $1 ) if( $ARGS{mode} eq "for" );
-	    }
+	my $curdir = $curdir_spec;
+	if( $filename =~ m:^(\/.*?)([^/]*)$: )
+	    { $curdir = $1; }
 	else
 	    {
-	    push( @lines, $ln ) if( $ARGS{mode} eq "against" );
+	    $filename = "$curdir/$filename";
+	    $curdir = $1 if( $filename =~ m:^(.*)/(.*?)$: );
 	    }
+	$filename = &distill_filename( $filename );
+	if( -d $filename )
+	    {
+	    foreach my $filename_in_dir ( &fqfiles_in( $filename ) )
+		{
+		&do_include( $curdir, $filename_in_dir, $indexp, $docp );
+		}
+	    }
+	elsif( -f $filename )
+	    {
+	    foreach my $line ( split(/\n/,&read_file($filename)) )
+		{
+		if( $line =~ /^[^\w]*indx#\s*\**([^\s]+)\**[:\-\s]*(.*?)$/ )
+		    {
+		    $tag = "dt_".&compress_integer( $tag_ind++ );
+		    $current_topic = $1;
+		    push( @{$indexp}, "<tr><th align=left><a href='#$tag'>$current_topic</a></th><td>$2</td></tr>" );
+		    }
+		elsif(  $line =~ /^[^\w]*doc#\s*(.*?)-\s*(.*?)$/ 
+		 ||	    $line =~ /^[^\w]*doc#(\s*)(.*?)$/ )
+		    {
+		    push( @{$docp}, "\n## <a id='$tag'>$current_topic</a>" ) if( $current_topic );
+		    undef $current_topic;
+		    push( @{$docp}, $2 );
+		    }
+		if( $line =~ /^[^\w]*include#\s*(.*)$/ )
+		    {
+		    &do_include( $curdir, $1, $indexp, $docp );
+		    }
+		}
+	    }
+	else
+	    { &fatal("${filename} has bogus type."); }
 	}
-    return @lines;
     }
 
 #########################################################################
@@ -83,23 +120,30 @@ sub filter
 %ARGS = &parse_arguments( {
     switches=>
 	{
-	input_file	=> "/dev/stdin",
-	output_file	=> "/dev/stdout",
-	filter		=> "#doc#",
-	mode		=> [ "for", "against" ]
+	#input_file	=> "/dev/stdin",
+	input_file	=> "README.template",
+	#output_file	=> "/dev/stdout",
+	output_file	=> "README.md",
 	},
     non_switches=>\@files
     } );
 
-my @lines;
-if( ! @files )
-    { push( @lines, &filter( &read_file( $ARGS{input_file} ) ) ); }
+my @indices;
+my @docs;
+my $old_contents = &read_file( $ARGS{input_file} );
+my $new_contents;
+if( $old_contents !~ m:(.*<table[^>]*?src=")(.*?)("[^>]*?>)(.*?)(</table>.*<div id=docs>)(.*?)(</div>.*):ms )
+    { &fatal("$ARGS{input_file} does not look like useful to doc_sep."); }
 else
     {
-    foreach my $fname ( @files )
-        { push( @lines, &filter( &read_file( $fname ) ) ); }
+    my( $preamble, $src, $postamble, $table, $prediv, $div, $postdiv ) = ( $1, $2, $3, $4, $5, $6, $7, $8 );
+    &do_include( ".", $src, \@indices, \@docs );
+    $table = join("\n",@indices);
+    $div = join("\n","",@docs);
+    my $new_contents = "$preamble$src$postamble$table$prediv$div$postdiv";
+    if( $old_contents eq $new_contents )
+	{ print STDERR "There is no change to $ARGS{input_file}.\n"; }
+    else
+	{ &write_lines( $ARGS{output_file}, $new_contents ); }
+    &cleanup( $exit_stat );
     }
-
-&write_lines( $ARGS{output_file}, @lines );
-
-&cleanup( $exit_stat );

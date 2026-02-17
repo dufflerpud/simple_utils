@@ -1,5 +1,5 @@
 #!/bin/sh
-#indx#	killsound.sh - Sound has gotten wedged, kill associated process
+#indx#	killsound - Sound has gotten wedged, kill associated process
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -27,7 +27,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	killsound.sh - Sound has gotten wedged, kill associated process
+#doc#	killsound - Sound has gotten wedged, kill associated process
 ########################################################################
 
 TMP=/tmp/killsound.$$

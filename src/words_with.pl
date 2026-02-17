@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	words_with.pl - Show words using specified letters
+#indx#	words_with - Show words using specified letters
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	words_with.pl - Show words using specified letters
+#doc#	words_with - Show words using specified letters
 ########################################################################
 
 use strict;

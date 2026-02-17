@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	anagram.pl - Print anagrams of word specified in argument
+#indx#	anagram - Print anagrams of word specified in argument
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	anagram.pl - Print anagrams of word specified in argument.
+#doc#	anagram - Print anagrams of word specified in argument.
 #doc#	Uses system english dictionary (/usr/share/dict/words).
 ########################################################################
 

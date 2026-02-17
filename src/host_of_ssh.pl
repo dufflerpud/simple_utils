@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	host_of_ssh.pl - Print info about inbound SSH connections
+#indx#	host_of_ssh - Print info about inbound SSH connections
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	host_of_ssh.pl - Print info about inbound SSH connections.
+#doc#	host_of_ssh - Print info about inbound SSH connections.
 #doc#	Filters output of lsof.
 ########################################################################
 

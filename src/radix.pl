@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	radix.pl - Find all radices where number has specified digits
+#indx#	radix - Find all radices where number has specified digits
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	radix.pl - Find all radices where number has specified digits
+#doc#	radix - Find all radices where number has specified digits
 #doc#	Radices from 2 to 62 checked.
 ########################################################################
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	merge_movies.sh - Create movie from audio and video files
+#indx#	merge_movies - Create movie from audio and video files
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	merge_movies.sh - Create movie from audio and video files
+#doc#	merge_movies - Create movie from audio and video files
 ########################################################################
 
 PROG=`basename $0`

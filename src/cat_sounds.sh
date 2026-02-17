@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	cat_sounds.sh - Obsoleted by cat_media - Only for sounds
+#indx#	cat_sounds - Obsoleted by cat_media - Only for sounds
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	cat_sounds.sh - Obsoleted by cat_media - Only for sounds
+#doc#	cat_sounds - Obsoleted by cat_media - Only for sounds
 ########################################################################
 
 PROG=`basename $0`

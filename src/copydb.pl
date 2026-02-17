@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	copydb.pl - Copy data from gdbm or perl objects to another db format
+#indx#	copydb - Copy data from gdbm or perl objects to another db format
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	copydb.pl - Copy data from gdbm or perl objects into another
+#doc#	copydb - Copy data from gdbm or perl objects into another
 #doc#	format. Easily extensible to copy SQL or other database formats
 #doc#	#as cpi_db is extended.
 ########################################################################

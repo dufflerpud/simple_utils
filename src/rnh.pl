@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	rnh.pl - Simple file to manipulate old UNH runoff files.
+#indx#	rnh - Simple file to manipulate old UNH runoff files.
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	rnh.pl - Simple file to manipulate old UNH runoff files.
+#doc#	rnh - Simple file to manipulate old UNH runoff files.
 ########################################################################
 
 use strict;

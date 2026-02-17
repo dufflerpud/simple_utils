@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	sanifile.pl - Fix filenames to be UNIX friendly and convert to standard types
+#indx#	sanifile - Fix filenames to be UNIX friendly and convert to standard types
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,10 +28,10 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	sanifile.pl - Fix filenames to be UNIX friendly and convert to standard types
-#doc#	For instance, the standard movie is quicktime .mov.
-#doc#	The standard for still pics are jpegs.
-#doc#	The standard for still audo is mp3, etc.
+#doc#	sanifile - Fix filenames to be UNIX friendly and convert to standard types
+#doc#	<li>For instance, the standard movie is quicktime .mov.</li>
+#doc#	<li>The standard for a still pic is .jpeg.</li>
+#doc#	<li>The standard for still audio is .mp3, etc.</li>
 #doc#	Convenient to apply to directories to quickly make sense of them.
 ########################################################################
 

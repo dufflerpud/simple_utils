@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	count_domains.pl - Read ip log file & count packets by domain
+#indx#	count_domains - Read ip log file & count packets by domain
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	count_domains.pl - Read ip log file & count packets by domain
+#doc#	count_domains - Read ip log file & count packets by domain
 #doc#	Information assumed to be on standard in put.
 ########################################################################
 

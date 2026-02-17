@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	mode.sh - Yet another script to easily chmod and chown files.
+#indx#	mode - Yet another script to easily chmod and chown files.
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	mode.sh - Yet another script to easily chmod and chown files.
+#doc#	mode - Yet another script to easily chmod and chown files.
 ########################################################################
 
 charg="$1"

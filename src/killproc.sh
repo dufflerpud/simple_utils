@@ -1,5 +1,5 @@
 #!/bin/sh
-#indx#	killproc.sh - Kill all processes matching supplied argument
+#indx#	killproc - Kill all processes matching supplied argument
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -27,7 +27,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	killproc.sh - Kill all processes matching supplied argument
+#doc#	killproc - Kill all processes matching supplied argument
 ########################################################################
 
 LOOK4="sendmail"

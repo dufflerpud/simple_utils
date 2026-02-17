@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	rebup.sh - Rename backup files to consistant names
+#indx#	rebup - Rename backup files to consistant names
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	rebup.sh - Rename backup files to consistant names
+#doc#	rebup - Rename backup files to consistant names
 ########################################################################
 
 FILEBASE="$1"

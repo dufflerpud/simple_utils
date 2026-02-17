@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl -w
 #
-#indx#	setup_access_point.pl - Configure local WIFI card to be access point
+#indx#	setup_access_point - Configure local WIFI card to be access point
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -29,7 +29,7 @@
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Standard header
 ########################################################################
-#doc#	setup_access_point.pl - Configure local WIFI card to be access point
+#doc#	setup_access_point - Configure local WIFI card to be access point
 ########################################################################
 
 use strict;

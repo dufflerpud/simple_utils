@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	send_text.pl - Send a text to specified phone by e-mail to special address
+#indx#	send_text - Send a text to specified phone by e-mail to special address
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	send_text.pl - Send a text to specified phone by e-mail to special address
+#doc#	send_text - Send a text to specified phone by e-mail to special address
 #doc#	Really just a front end to e-mail.
 ########################################################################
 

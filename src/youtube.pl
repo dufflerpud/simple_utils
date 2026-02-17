@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	youtube.pl - Convenient interface yt-dlp to download youtube videos
+#indx#	youtube - Convenient interface yt-dlp to download youtube videos
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	youtube.pl - Convenient interface yt-dlp to download youtube videos
+#doc#	youtube - Convenient interface yt-dlp to download youtube videos
 #doc#	In particular, maintain a list of files (youtube.list) in CWD
 #doc#	with media and where it came from.
 ########################################################################

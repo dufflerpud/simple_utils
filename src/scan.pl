@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	scan.pl - A friendly front end to scanimage to scan documents
+#indx#	scan - A friendly front end to scanimage to scan documents
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	scan.pl - A friendly front end to scanimage to scan documents
+#doc#	scan - A friendly front end to scanimage to scan documents
 #doc#	Uses merge_scan_batch and cat_media to construct pdf files.
 ########################################################################
 

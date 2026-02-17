@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	sudoinstall.pl - Try to install something.  I fail, sudo and try again.
+#indx#	sudoinstall - Try to install something.  I fail, sudo and try again.
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -29,7 +29,7 @@
 #hist#	2024-04-18 - Christopher.M.Caldwell0@gmail.com - Created
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Standard header
 ########################################################################
-#doc#	sudoinstall.pl - Try to install something.  I fail, sudo and try again.
+#doc#	sudoinstall - Try to install something.  I fail, sudo and try again.
 #doc#	A utility to run the install command, usually used by Makefile.	#
 #doc#	Attempts the install first, and if it fails, does the same	#
 #doc#	command under sudo.  Prevents user from having to become root	#

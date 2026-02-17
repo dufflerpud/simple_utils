@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	tmog.pl - Type, Mode, Owner and Group - create specified file
+#indx#	tmog - Type, Mode, Owner and Group - create specified file
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	tmog.pl - Type, Mode, Owner and Group - create specified file
+#doc#	tmog - Type, Mode, Owner and Group - create specified file
 #doc#	Similar to linux install utility but a lot faster to type
 #doc#	because if can look at the arguments to know whether they apply
 #doc#	to the file type, its mode etc.

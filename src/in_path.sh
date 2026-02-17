@@ -1,5 +1,5 @@
 #!/bin/sh
-#indx#	in_path.sh - Script version of 'which' command.
+#indx#	in_path - Script version of 'which' command.
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -27,7 +27,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	in_path.sh - Script version of 'which' command.
+#doc#	in_path - Script version of 'which' command.
 ########################################################################
 
 # This is called by programs to see if the utilities required are

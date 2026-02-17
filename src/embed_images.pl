@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	embed_images.pl - Convert image URLs to the data they are pointing to
+#indx#	embed_images - Convert image URLs to the data they are pointing to
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	embed_images.pl - Convert image URLs to the data they are pointing to.
+#doc#	embed_images - Convert image URLs to the data they are pointing to.
 #doc#	Useful for creating html that doesn't require internet connection.
 ########################################################################
 

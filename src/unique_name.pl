@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl -w
 #
-#indx#	unique_name.pl - Fill in unique digits to create a filename
+#indx#	unique_name - Fill in unique digits to create a filename
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -29,7 +29,7 @@
 #hist#	2024-04-20 - Christopher.M.Caldwell0@gmail.com - Created
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Standard header
 ########################################################################
-#doc#	unique_name.pl - Fill in unique digits to create a filename
+#doc#	unique_name - Fill in unique digits to create a filename
 #doc#	Create a unique name for a file based on % notation in the
 #doc#	supplied name.
 ########################################################################

@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #
-#indx#	mixtape.pl - Create collections, or play randomly from collection
+#indx#	mixtape - Create collections, or play randomly from collection
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	mixtape.pl - Create music collections, or play randomly from collection
+#doc#	mixtape - Create music collections, or play randomly from collection
 #doc#	or simply play random music from a specified directory.
 ########################################################################
 

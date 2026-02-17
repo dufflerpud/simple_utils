@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	cat_media.pl - Concatinates different types of files (movies, pics, audio etc)
+#indx#	cat_media - Concatinates different types of files (movies, pics, audio etc)
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	cat_media.pl - Concatinates different types of files (movies, pics,
+#doc#	cat_media - Concatinates different types of files (movies, pics,
 #doc#	audio etc).  Complex because videos may not be same aspect ratio,
 #doc#	audios may have different sample rates, etc.
 ########################################################################

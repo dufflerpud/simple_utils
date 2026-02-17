@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	upend.pl - Print lines with text reversed within the line
+#indx#	upend - Print lines with text reversed within the line
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	upend.pl - Print lines with text reversed within the line
+#doc#	upend - Print lines with text reversed within the line
 ########################################################################
 
 use strict;

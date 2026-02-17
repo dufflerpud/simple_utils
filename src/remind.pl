@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	remind.pl - Send e-mail reminders based on user's .remind
+#indx#	remind - Send e-mail reminders based on user's .remind
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	remind.pl - Send e-mail reminders based on user's .remind
+#doc#	remind - Send e-mail reminders based on user's .remind
 #doc#	Invoked once a day in the wee hours of the morning.
 ########################################################################
 #doc##Remind - Software to send e-mail reminders according to dated entries

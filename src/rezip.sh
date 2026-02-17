@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#indx#	rezip.sh - Change .gz files to .bz2 files
+#indx#	rezip - Change .gz files to .bz2 files
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	rezip.sh - Change .gz files to .bz2 files
+#doc#	rezip - Change .gz files to .bz2 files
 ########################################################################
 
 FILES="$*"

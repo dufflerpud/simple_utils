@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	nene.pl - Copy data from any ext to any ext (converting as required)
+#indx#	nene - Copy data from any ext to any ext (converting as required)
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	nene.pl - Copy data from any ext to any ext (converting as required)
+#doc#	nene - Copy data from any ext to any ext (converting as required)
 #doc#	More complex than you might think.  For instance, if you nene a
 #doc#	.txt file to a .mp3 file, you'll get the words in the .txt file
 #doc#	in spoken English.  If you nene from a movie to a sound file,

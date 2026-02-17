@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	indent_json.pl - Output json in a semi-readable (indented) format
+#indx#	indent_json - Output json in a semi-readable (indented) format
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	indent_json.pl - Output json in a semi-readable (indented) format.
+#doc#	indent_json - Output json in a semi-readable (indented) format.
 #doc#	Note that there are more standard libraries for doing this
 #doc#	but the developer wasn't wild about the format.
 ########################################################################

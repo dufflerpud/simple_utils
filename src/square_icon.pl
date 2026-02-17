@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	square_icon.pl - Create an icon suitable for iPhone based on supplied text
+#indx#	square_icon - Create an icon suitable for iPhone based on supplied text
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	square_icon.pl - Create an icon suitable for iPhone based on supplied text
+#doc#	square_icon - Create an icon suitable for iPhone based on supplied text
 ########################################################################
 
 #########################################################################

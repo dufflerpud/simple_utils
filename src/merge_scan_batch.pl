@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl -w
 #
-#indx#	merge_scan_batch.pl - Collect multiple pages into a single document
+#indx#	merge_scan_batch - Collect multiple pages into a single document
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	merge_scan_batch.pl - Collect multiple pages into a single document
+#doc#	merge_scan_batch - Collect multiple pages into a single document
 #doc#	Generally takes a bunch of .pnm files to create a .pdf files, but
 #doc#	input can be any single-page-images.  Smart enough to order PDF
 #doc#	pages based on images scanned from two sided documents.

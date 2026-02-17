@@ -1,5 +1,5 @@
 #!/bin/sh
-#indx#	make_src_rpm.sh - Create an RPM file for installing specified source
+#indx#	make_src_rpm - Create an RPM file for installing specified source
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -27,7 +27,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	make_src_rpm.sh - Create an RPM file for installing specified source
+#doc#	make_src_rpm - Create an RPM file for installing specified source
 ########################################################################
 
 PROG=`basename $0`

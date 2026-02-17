@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-#indx#	sumdir.pl - Create a file containing checksums of files in directory
+#indx#	sumdir - Create a file containing checksums of files in directory
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	sumdir.pl - Create a file containing checksums of files in directory
+#doc#	sumdir - Create a file containing checksums of files in directory
 ########################################################################
 
 use strict;

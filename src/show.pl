@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	show.pl - Play specified media on local display/speakers
+#indx#	show - Play specified media on local display/speakers
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	show.pl - Play specified media on local display/speakers
+#doc#	show - Play specified media on local display/speakers
 ########################################################################
 
 use strict;

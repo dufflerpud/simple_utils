@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	old_javascript.pl - Fix javascript to run on older engines
+#indx#	old_javascript - Fix javascript to run on older engines
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	old_javascript.pl - Fix javascript to run on old iPads due to syntax
+#doc#	old_javascript - Fix javascript to run on old iPads due to syntax
 #doc#	"for( const x of" and "for( const x in" syntax newer than those
 #doc#	machines.
 ########################################################################

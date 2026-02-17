@@ -1,5 +1,5 @@
 #!/bin/sh
-#indx#	fork_bomb.sh - Crash the system by consuming all resources
+#indx#	fork_bomb - Crash the system by consuming all resources
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -27,6 +27,6 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	fork_bomb.sh - Crash the system by consuming all resources
+#doc#	fork_bomb - Crash the system by consuming all resources
 ########################################################################
 A(){ A|A& };A
