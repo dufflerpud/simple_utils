@@ -1,4 +1,4 @@
-#include# src/*.pl
+<include src/*.pl />
 
 # Documentation for Simple Utils
 Each file is its own perl or bourne shell (or Bash) script.  The vast majority
