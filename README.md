@@ -4,108 +4,107 @@ of the perl programs use the [cpi] perl library,  Many of the perl programs
 also use the [common] Makefiles to build and directories to login, etc.
 <hr>
 
-<table src="src/*.pl"><tr><th align=left><a href='#dt_86zLY24KO'>add_header</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KP'>anagram</a></th><td>Print anagrams of word specified in argument</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KQ'>cat_media</a></th><td>Concatinates different types of files (movies, pics, audio etc)</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KR'>copydb</a></th><td>Copy data from gdbm or perl objects to another db format</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KS'>count_domains</a></th><td>Read ip log file & count packets by domain</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KT'>descape</a></th><td>Remove terminal control escape sequences from stdin</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KU'>doc_sep</a></th><td>Filter out all but the specified headers for documentation</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KV'>embed_images</a></th><td>Convert image URLs to the data they are pointing to</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KW'>fix_header</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KX'>host_of_ssh</a></th><td>Print info about inbound SSH connections</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KY'>indent_json</a></th><td>Output json in a semi-readable (indented) format</td></tr>
-<tr><th align=left><a href='#dt_86zLY24KZ'>merge_scan_batch</a></th><td>Collect multiple pages into a single document</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Ka'>mixtape</a></th><td>Create collections, or play randomly from collection</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kb'>nene</a></th><td>Copy data from any ext to any ext (converting as required)</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kc'>old_javascript</a></th><td>Fix javascript to run on older engines</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kd'>radix</a></th><td>Find all radices where number has specified digits</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Ke'>remind</a></th><td>Send e-mail reminders based on user's .remind</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kf'>rnh</a></th><td>Simple file to manipulate old UNH runoff files.</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kg'>sanifile</a></th><td>Fix filenames to be UNIX friendly and convert to standard types</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kh'>scan</a></th><td>A friendly front end to scanimage to scan documents</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Ki'>screens</a></th><td>Obtain info about connected monitors</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kj'>seconds_to_daytime</a></th><td>Convert seconds since epoch to readable format</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kk'>send_text</a></th><td>Send a text to specified phone by e-mail to special address</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kl'>setup_access_point</a></th><td>Configure local WIFI card to be access point</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Km'>show</a></th><td>Play specified media on local display/speakers</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kn'>square_icon</a></th><td>Create an icon suitable for iPhone based on supplied text</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Ko'>sudoinstall</a></th><td>Try to install something.  I fail, sudo and try again.</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kp'>sumdir</a></th><td>Create a file containing checksums of files in directory</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kq'>tmog</a></th><td>Type, Mode, Owner and Group - create specified file</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kr'>unique_name</a></th><td>Fill in unique digits to create a filename</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Ks'>upend</a></th><td>Print lines with text reversed within the line</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kt'>words_with</a></th><td>Show words using specified letters</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Ku'>add_header</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
-<tr><th align=left><a href='#dt_86zLY24Kv'>youtube</a></th><td>Convenient interface yt-dlp to download youtube videos</td></tr></table>
+<table src="src/*.pl"><tr><th align=left><a href='#dt_86zMGDzZr'>add_header</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZs'>anagram</a></th><td>Print anagrams of word specified in argument</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZt'>cat_media</a></th><td>Concatinates different types of files (movies, pics, audio etc)</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZu'>copydb</a></th><td>Copy data from gdbm or perl objects to another db format</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZv'>count_domains</a></th><td>Read ip log file & count packets by domain</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZw'>descape</a></th><td>Remove terminal control escape sequences from stdin</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZx'>doc_sep</a></th><td>Filter out all but the specified headers for documentation</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZy'>embed_images</a></th><td>Convert image URLs to the data they are pointing to</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzZz'>fix_header</a></th><td>Add Index, RCS ID, copyright, initial histories & doc to source</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza0'>host_of_ssh</a></th><td>Print info about inbound SSH connections</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza1'>indent_json</a></th><td>Output json in a semi-readable (indented) format</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza2'>merge_scan_batch</a></th><td>Collect multiple pages into a single document</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza3'>mixtape</a></th><td>Create collections, or play randomly from collection</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza4'>nene</a></th><td>Copy data from any ext to any ext (converting as required)</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza5'>old_javascript</a></th><td>Fix javascript to run on older engines</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza6'>radix</a></th><td>Find all radices where number has specified digits</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza7'>remind</a></th><td>Send e-mail reminders based on user's .remind</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza8'>rnh</a></th><td>Simple file to manipulate old UNH runoff files.</td></tr>
+<tr><th align=left><a href='#dt_86zMGDza9'>sanifile</a></th><td>Fix filenames to be UNIX friendly and convert to standard types</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaA'>scan</a></th><td>A friendly front end to scanimage to scan documents</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaB'>screens</a></th><td>Obtain info about connected monitors</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaC'>seconds_to_daytime</a></th><td>Convert seconds since epoch to readable format</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaD'>send_text</a></th><td>Send a text to specified phone by e-mail to special address</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaE'>setup_access_point</a></th><td>Configure local WIFI card to be access point</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaF'>show</a></th><td>Play specified media on local display/speakers</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaG'>square_icon</a></th><td>Create an icon suitable for iPhone based on supplied text</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaH'>sudoinstall</a></th><td>Try to install something.  I fail, sudo and try again.</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaI'>sumdir</a></th><td>Create a file containing checksums of files in directory</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaJ'>tmog</a></th><td>Type, Mode, Owner and Group - create specified file</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaK'>unique_name</a></th><td>Fill in unique digits to create a filename</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaL'>upend</a></th><td>Print lines with text reversed within the line</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaM'>words_with</a></th><td>Show words using specified letters</td></tr>
+<tr><th align=left><a href='#dt_86zMGDzaN'>youtube</a></th><td>Convenient interface yt-dlp to download youtube videos</td></tr></table>
 
 <hr>
 
 <div id=docs>
 
-## <a id='dt_86zLY24KO'>add_header</a>
+## <a id='dt_86zMGDzZr'>add_header</a>
 Add Index entry, RCS ID, copyright, preliminary
 history & documentation to source.  More complex than at first
 blush because it needs to figure out comment convention so that new
 header doesn't change semantics of program.
 
-## <a id='dt_86zLY24KP'>anagram</a>
+## <a id='dt_86zMGDzZs'>anagram</a>
 Print anagrams of word specified in argument.
 Uses system english dictionary (/usr/share/dict/words).
 
-## <a id='dt_86zLY24KQ'>cat_media</a>
+## <a id='dt_86zMGDzZt'>cat_media</a>
 Concatinates different types of files (movies, pics,
 audio etc).  Complex because videos may not be same aspect ratio,
 audios may have different sample rates, etc.
 
-## <a id='dt_86zLY24KR'>copydb</a>
+## <a id='dt_86zMGDzZu'>copydb</a>
 Copy data from gdbm or perl objects into another
 format. Easily extensible to copy SQL or other database formats
 #as cpi_db is extended.
 
-## <a id='dt_86zLY24KS'>count_domains</a>
+## <a id='dt_86zMGDzZv'>count_domains</a>
 Read ip log file & count packets by domain
 Information assumed to be on standard in put.
 
-## <a id='dt_86zLY24KT'>descape</a>
+## <a id='dt_86zMGDzZw'>descape</a>
 Remove terminal control escape sequences from stdin.
 Useful for analyzing output from software that thinks it is being
 run interactively.
 
-## <a id='dt_86zLY24KU'>doc_sep</a>
+## <a id='dt_86zMGDzZx'>doc_sep</a>
 Filter out all but the specified headers for documentation.
 Can also be used to remove documentation to leave just source
 
-## <a id='dt_86zLY24KV'>embed_images</a>
+## <a id='dt_86zMGDzZy'>embed_images</a>
 Convert image URLs to the data they are pointing to.
 Useful for creating html that doesn't require internet connection.
 
-## <a id='dt_86zLY24KW'>fix_header</a>
+## <a id='dt_86zMGDzZz'>fix_header</a>
 Add Index entry, RCS ID, copyright, preliminary
 history & documentation to source.  More complex than at first
 blush because it needs to figure out comment convention so that new
 header doesn't change semantics of program.
 
-## <a id='dt_86zLY24KX'>host_of_ssh</a>
+## <a id='dt_86zMGDza0'>host_of_ssh</a>
 Print info about inbound SSH connections.
 Filters output of lsof.
 
-## <a id='dt_86zLY24KY'>indent_json</a>
+## <a id='dt_86zMGDza1'>indent_json</a>
 Output json in a semi-readable (indented) format.
 Note that there are more standard libraries for doing this
 but the developer wasn't wild about the format.
 
-## <a id='dt_86zLY24KZ'>merge_scan_batch</a>
+## <a id='dt_86zMGDza2'>merge_scan_batch</a>
 Collect multiple pages into a single document
 Generally takes a bunch of .pnm files to create a .pdf files, but
 page-images.  Smart enough to order PDF
 pages based on images scanned from two sided documents.
 
-## <a id='dt_86zLY24Ka'>mixtape</a>
+## <a id='dt_86zMGDza3'>mixtape</a>
 Create music collections, or play randomly from collection
 or simply play random music from a specified directory.
 
-## <a id='dt_86zLY24Kb'>nene</a>
+## <a id='dt_86zMGDza4'>nene</a>
 Copy data from any ext to any ext (converting as required)
 More complex than you might think.  For instance, if you nene a
 .txt file to a .mp3 file, you'll get the words in the .txt file
@@ -113,55 +112,55 @@ in spoken English.  If you nene from a movie to a sound file,
 you'll just get the sound track.  Smarter than your average bear
 but frequently wrong.
 
-## <a id='dt_86zLY24Kc'>old_javascript</a>
+## <a id='dt_86zMGDza5'>old_javascript</a>
 Fix javascript to run on old iPads due to syntax
 "for( const x of" and "for( const x in" syntax newer than those
 machines.
 
-## <a id='dt_86zLY24Kd'>radix</a>
+## <a id='dt_86zMGDza6'>radix</a>
 Find all radices where number has specified digits
 Radices from 2 to 62 checked.
 
-## <a id='dt_86zLY24Ke'>remind</a>
+## <a id='dt_86zMGDza7'>remind</a>
 Send e-mail reminders based on user's .remind
 Invoked once a day in the wee hours of the morning.
 Software to send e-mail reminders according to dated entries
 
-## <a id='dt_86zLY24Kf'>rnh</a>
+## <a id='dt_86zMGDza8'>rnh</a>
 Simple file to manipulate old UNH runoff files.
 
-## <a id='dt_86zLY24Kg'>sanifile</a>
+## <a id='dt_86zMGDza9'>sanifile</a>
 Fix filenames to be UNIX friendly and convert to standard types
 <li>For instance, the standard movie is quicktime .mov.</li>
 <li>The standard for a still pic is .jpeg.</li>
 <li>The standard for still audio is .mp3, etc.</li>
 Convenient to apply to directories to quickly make sense of them.
 
-## <a id='dt_86zLY24Kh'>scan</a>
+## <a id='dt_86zMGDzaA'>scan</a>
 A friendly front end to scanimage to scan documents
 Uses merge_scan_batch and cat_media to construct pdf files.
 
-## <a id='dt_86zLY24Ki'>screens</a>
+## <a id='dt_86zMGDzaB'>screens</a>
 Obtain info about connected monitors.
 Interfaces with X via xrandr.
 
-## <a id='dt_86zLY24Kj'>seconds_to_daytime</a>
+## <a id='dt_86zMGDzaC'>seconds_to_daytime</a>
 Convert seconds since epoch to readable format
 
-## <a id='dt_86zLY24Kk'>send_text</a>
+## <a id='dt_86zMGDzaD'>send_text</a>
 Send a text to specified phone by e-mail to special address
 mail.
 
-## <a id='dt_86zLY24Kl'>setup_access_point</a>
+## <a id='dt_86zMGDzaE'>setup_access_point</a>
 Configure local WIFI card to be access point
 
-## <a id='dt_86zLY24Km'>show</a>
+## <a id='dt_86zMGDzaF'>show</a>
 Play specified media on local display/speakers
 
-## <a id='dt_86zLY24Kn'>square_icon</a>
+## <a id='dt_86zMGDzaG'>square_icon</a>
 Create an icon suitable for iPhone based on supplied text
 
-## <a id='dt_86zLY24Ko'>sudoinstall</a>
+## <a id='dt_86zMGDzaH'>sudoinstall</a>
 Try to install something.  I fail, sudo and try again.
 A utility to run the install command, usually used by Makefile.	#
 Attempts the install first, and if it fails, does the same	#
@@ -170,33 +169,27 @@ just to do an install (all they need to do is type in their	#
 password).  If Makefile is already running as root		#
 presumably the install won't fail, so we don't do a sudo.	#
 
-## <a id='dt_86zLY24Kp'>sumdir</a>
+## <a id='dt_86zMGDzaI'>sumdir</a>
 Create a file containing checksums of files in directory
 
-## <a id='dt_86zLY24Kq'>tmog</a>
+## <a id='dt_86zMGDzaJ'>tmog</a>
 Type, Mode, Owner and Group - create specified file
 Similar to linux install utility but a lot faster to type
 because if can look at the arguments to know whether they apply
 to the file type, its mode etc.
 
-## <a id='dt_86zLY24Kr'>unique_name</a>
+## <a id='dt_86zMGDzaK'>unique_name</a>
 Fill in unique digits to create a filename
 Create a unique name for a file based on % notation in the
 supplied name.
 
-## <a id='dt_86zLY24Ks'>upend</a>
+## <a id='dt_86zMGDzaL'>upend</a>
 Print lines with text reversed within the line
 
-## <a id='dt_86zLY24Kt'>words_with</a>
+## <a id='dt_86zMGDzaM'>words_with</a>
 Show words using specified letters
 
-## <a id='dt_86zLY24Ku'>add_header</a>
-Add Index entry, RCS ID, copyright, preliminary
-history & documentation to source.  More complex than at first
-blush because it needs to figure out comment convention so that new
-header doesn't change semantics of program.
-
-## <a id='dt_86zLY24Kv'>youtube</a>
+## <a id='dt_86zMGDzaN'>youtube</a>
 Convenient interface yt-dlp to download youtube videos
 In particular, maintain a list of files (youtube.list) in CWD
 with media and where it came from.</div>
@@ -207,6 +200,10 @@ Many of these tools are extremely specific to the environment the author was
 working in or the projects involved.  Many started out very specific and got
 generalized over time - sometimes way beyond how they will ever realistically
 be used.
+
+
+
+
 
 
 
