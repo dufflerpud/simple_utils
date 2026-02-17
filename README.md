@@ -42,6 +42,7 @@ also use the [common] Makefiles to build and directories to login, etc.
 <hr>
 
 <div id=docs>
+
 ## <a id='dt_86zL6YX5O'>add_header</a>
 Add Index entry, RCS ID, copyright, preliminary
 history & documentation to source.  More complex than at first
