@@ -120,9 +120,7 @@ sub do_include
 %ARGS = &parse_arguments( {
     switches=>
 	{
-	#input_file	=> "/dev/stdin",
-	input_file	=> "README.template",
-	#output_file	=> "/dev/stdout",
+	input_file	=> "README.md",
 	output_file	=> "README.md",
 	},
     non_switches=>\@files
