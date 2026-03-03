@@ -102,6 +102,8 @@ sub usage
 	"    -Y <copyright year>        ($ONLY_ONE_DEFAULTS{year})",
 	"    -em <email address>        ($ONLY_ONE_DEFAULTS{email_address})",
 	"    -comp <company name>       ($ONLY_ONE_DEFAULTS{company})",
+	"    -ind <comment for index>	(1=make something up)",
+	"    -doc <comment for doc>	(1=make something up)",
 	"    -n <author name>           ($ONLY_ONE_DEFAULTS{name})",
 	"    -a <copyright address>     ($ONLY_ONE_DEFAULTS{postal_address})",
 	"    -cop <header style>        ($ONLY_ONE_DEFAULTS{copyright_style}[0])",
