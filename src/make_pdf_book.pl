@@ -66,11 +66,12 @@ sub usage
     {
     &fatal( @_, "",
 	"Usage:  $cpi_vars::PROG <possible arguments>","",
-	"where <possible arguments> is:",
+	"where <possible arguments> are:",
 	"    -o <output file>",
 	"    -t <title>",
+	"    -s <subtitle>",
 	"    <filename>",
-	"    <filename> -t <file title>"
+	"    <filename>:<file title>"
 	);
     }
 
@@ -130,17 +131,18 @@ sub generate_blank
 
 #########################################################################
 #	Concatinate a blank page and all of the user's files.		#
+#	Blank will be replaced by the contents.				#
 #########################################################################
 sub generate_base
     {
     my( $blank, @flist ) = @_;
     my $outfile = "$TMP/base.pdf";
 
-    echodo( join(" ",
+    echodo(
         "pdfunite", 
 	$blank,
 	( map { $_->{pdfname} } @flist ),
-	$outfile) );
+	$outfile );
 
     return $outfile;
     }
@@ -190,7 +192,7 @@ EOF
 	    {
 	    $fl->{pdfname} = "$TMP/in.$ind.pdf";
 	    $ind++;
-	    &echodo( join(" ",$CVT,$fl->{name},$fl->{pdfname}) );
+	    &echodo( $CVT,$fl->{name},$fl->{pdfname} );
 	    }
 
 	if( !open(INF,"pdfinfo '".$fl->{pdfname}."' |") )
