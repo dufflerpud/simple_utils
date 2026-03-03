@@ -48,7 +48,8 @@ use cpi_inlist qw( inlist );
 my $PROG = ( $_=$0, s+.*/++, $_ );
 my $TMP = "/var/tmp/$PROG.$$";
 #my $YTDLP = "/usr/local/bin/youtube-dl";
-my $YTDLP = "/bin/yt-dlp -4";
+#my $YTDLP = "/bin/yt-dlp -4";
+my $YTDLP = "yt-dlp -4";
 our %ONLY_ONE_DEFAULTS =
     (
     "album"		=>	"youtube.list",
