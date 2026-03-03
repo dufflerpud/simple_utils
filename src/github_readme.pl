@@ -49,6 +49,39 @@ our @files;
 my $tag_ind = time() * 1000000 + $$;
 
 #########################################################################
+#	Return a string with a made-up readme that will get modified	#
+#	by the developer.						#
+#########################################################################
+sub readme_template
+    {
+    my $PROJECT=`pwd`;
+    chomp( $PROJECT );
+    $PROJECT =~ s+.*/++g;
+    $PROJECT = ucfirst( $PROJECT );
+    return <<EOF;
+# Documentation for ${PROJECT}:
+
+Replace this line with an introduction to the use of the $PROJECT software.
+
+<hr>
+
+<table src="Makefile src/*.cgi src/*.pl lib/*.js"></table>
+
+<hr>
+
+<div id=docs></div>
+
+<hr>
+
+If you add a file with #doc#/#indx# lines, you should make sure it will be
+found in the 'table src=' line above and then rerun $cpi_vars::PROG in
+this directory.
+
+Similarly, if you remove files, re-run $cpi_vars::PROG.
+EOF
+    }
+
+#########################################################################
 #	Print an error, usage message and die.				#
 #########################################################################
 sub usage
@@ -108,6 +141,10 @@ sub do_include
 		    }
 		}
 	    }
+	elsif( ! -e $filename )
+	    {
+	    print STDERR "Warning:  No such file as [$filename].\n";
+	    }
 	else
 	    { &fatal("${filename} has bogus type."); }
 	}
@@ -128,7 +165,7 @@ sub do_include
 
 my @indices;
 my @docs;
-my $old_contents = &read_file( $ARGS{input_file} );
+my $old_contents = &read_file( $ARGS{input_file}, &readme_template() );
 my $new_contents;
 if( $old_contents !~ m:(.*<table[^>]*?src=")(.*?)("[^>]*?>)(.*?)(</table>.*<div id=docs>)(.*?)(</div>.*):ms )
     { &fatal("$ARGS{input_file} does not look like useful to doc_sep."); }
@@ -136,10 +173,10 @@ else
     {
     my( $preamble, $src, $postamble, $table, $prediv, $div, $postdiv ) = ( $1, $2, $3, $4, $5, $6, $7, $8 );
     &do_include( ".", $src, \@indices, \@docs );
-    $table = join("\n",@indices);
-    $div = join("\n","",@docs);
+    $table = join("\n",(@indices?@indices:"<tr><th>No files found</th></tr>"));
+    $div = join("\n","",(@docs?@docs:"(No files found)"));
     my $new_contents = "$preamble$src$postamble$table$prediv$div$postdiv";
-    if( $old_contents eq $new_contents )
+    if( $old_contents eq $new_contents && -e $ARGS{output_file} )
 	{ print STDERR "There is no change to $ARGS{input_file}.\n"; }
     else
 	{ &write_lines( $ARGS{output_file}, $new_contents ); }
