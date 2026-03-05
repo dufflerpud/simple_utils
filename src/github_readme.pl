@@ -128,7 +128,7 @@ sub do_include
 		    $current_topic = $1;
 		    push( @{$indexp}, "<tr><th align=left><a href='#$tag'>$current_topic</a></th><td>$2</td></tr>" );
 		    }
-		elsif(  $line =~ /^[^\w]*doc#\s*(.*?)-\s*(.*?)$/ 
+		elsif(  $line =~ /^[^\w]*doc#\s*([^\-]*?)\s+-\s+(.*?)$/ 
 		 ||	    $line =~ /^[^\w]*doc#(\s*)(.*?)$/ )
 		    {
 		    push( @{$docp}, "\n## <a id='$tag'>$current_topic</a>" ) if( $current_topic );
