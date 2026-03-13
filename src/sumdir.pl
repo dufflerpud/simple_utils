@@ -32,57 +32,72 @@
 ########################################################################
 
 use strict;
-use Digest::MD5;
 
-sub fatal
-    {
-    print STDERR "$_[0]\n";
-    exit(1);
-    }
+use lib "/usr/local/lib/perl";
 
+use cpi_file qw( fatal read_file );
+use cpi_hash qw( hashof );
+use cpi_arguments qw( parse_arguments );
+use cpi_vars;
+
+########################################################################
+#	Return the checksum of the file.
+########################################################################
 sub getchecksum
     {
     my( $fn ) = @_;
     if( $fn =~ /^proc\// )
 	{ return "-"; }
-    elsif( ! open( CS, $fn ) )
+    elsif( ! -r $fn )
 	{ return "$fn:  $!"; }
     else
-        {
-	binmode( CS );
-	my $md5 = Digest::MD5->new;
-	$md5->addfile( *CS );
-	close( CS );
-	return $md5->b64digest;
+        { return &hashof( &read_file($fn) ); }
+    }
+
+########################################################################
+#	Main
+########################################################################
+
+my @todo;
+my %ARGS = &parse_arguments({
+    non_switches =>	\@todo,
+    switches =>
+    	{
+	"verbosity"	=> 0
+	}
+    });
+
+# Get the full list of files to return from the todo list (no recursion)
+my @files;
+while( @todo )
+    {
+    my $f = shift(@todo);
+    push( @files, $f );
+    if( ! -l $f && -d $f )
+        { 
+	if( ! opendir(D,$f) )
+	    { print STDERR "Cannot opendir($f):  $!\n"; }
+	else
+	    {
+	    push( @todo,
+		map{"$f/$_"}
+		    grep($_ ne "." && $_ ne "..",
+			readdir(D) ) );
+	    closedir(D);
+	    }
 	}
     }
 
-my @dirs = ();
-while( $_ = shift(@ARGV) )
-    {
-    push( @dirs, $_ );
-    }
-
-my @fn = ();
-my $d;
-foreach $d ( @dirs )
-    {
-    open( INF, "find $d -print |" ) || &fatal("Cannot find $_:  $!");
-    while( $_ = <INF> )
-        {
-	chomp( $_ );
-	$_ =~ s/^\.\///;
-	push( @fn, $_ );
-	}
-    close( INF );
-    }
-
-my $name;
-foreach $name ( sort @fn )
+# lstat() each file and checksum actual data files
+foreach my $name ( sort @files )
     {
     if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size) = lstat($name) )
 	{
 	my $contentcsum = "-";
+
+	# "_" refers to the filehandle perl cached with the last stat
+	# or lstat as above.  It cuts down on the stat()ting which is a
+	# pretty cool efficiency hack but talk about obscure!
 	if( -l _ )
 	    {
 	    $contentcsum = readlink( $name );
