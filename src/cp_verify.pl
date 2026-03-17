@@ -59,7 +59,9 @@ my @DOCUMENT_ROOTS =
     (
     "/var/www/www",
     "/var/www/html",
-    "/srv/http"
+    "/srv/http",
+    "/srv/www/htdocs",
+    "/boot/system/data/apache/htdocs"
     );
 
 my @DIRS =
