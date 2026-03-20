@@ -84,7 +84,7 @@ sub read_machine_entries
 	        { $p->{Primary} = $tok; }
 	    else
 	        {
-		$p->{Aliases} = [] if( $p->{Aliases} );
+		$p->{Aliases} ||= [];
 	        push( @{$p->{Aliases}}, $tok );
 	        }
 	    }
