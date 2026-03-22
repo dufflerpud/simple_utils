@@ -45,7 +45,11 @@ my $MACHINES	= "/etc/machines";
 my $REDIRADDR	= "127.0.0.1";
 #my $SERIAL	= &time_string("%04d%02d%02d%02d%02d");
 my $SERIAL	= `date +%y%m%d%H%M`;   chomp( $SERIAL );
-my $NAMED_PID	= "/var/run/named/named.pid";
+my %PIDS	=
+		(
+		named	=> "/var/run/named/named.pid",
+		dhcpd	=>"/var/run/dhcpd/dhcpd.pid"
+		);
 
 our $exstat	= 0;
 our @problems;
@@ -131,6 +135,7 @@ my %ARGS = &parse_arguments({
 	hosts_file	=> "/etc/hosts",
 	ethers_file	=> "/etc/ethers",
 	named_files	=> "/var/named",
+	dhcpd_file	=> "/etc/dhcp/hardcoded.conf",
 	redirects	=> "/etc/host_redirects",
 	fields		=> "IPv4,IPv6,MAC,Primary,Aliases",
 	verbosity	=> 0
@@ -143,10 +148,14 @@ my @entries		= &read_machine_entries( $ARGS{input_file} );
 
 my @ethers		= &write_open( $ARGS{ethers_file}, "#" );
 my @hosts		= &write_open( $ARGS{hosts_file}, "#" );
+my @dhcpds		= &write_open( $ARGS{dhcpd_file}, "#" );
 my @pretty		= &write_open( $ARGS{output_file}, "#" );
 my @nameds		= &top_domain( "$ARGS{named_files}/$LC_DOMAIN" );
 
+push( @dhcpds, "# Note this file is not used anymore since W6000 is DHCP server", "" );
+
 my %widths;
+my %seen;
 foreach my $e ( @entries )
     {
     foreach my $f ( keys %{$e} )
@@ -155,6 +164,11 @@ foreach my $e ( @entries )
 	my $s = (ref($e->{f}) eq "ARRAY" ? join(" ",@{$e->{$f}}) : $e->{$f} );
 	my $l = length($s);
 	$widths{$f} = $l if( $l > $widths{$f} );
+	}
+    if( $e->{Primary} && $e->{MAC} && ( $e->{MAC} =~ /:/ ) )
+	{
+	$seen{IPv4}=1 if( $e->{IPv4} );
+	$seen{IPv6}=1 if( $e->{IPv6} );
 	}
     }
 
@@ -182,14 +196,38 @@ foreach my $e ( @entries )
 	my $s = "";
 	$s = ( ref($e->{$f}) eq "ARRAY" ? join(" ",@{$e->{$f}}) : $e->{$f} )
 	    if( $e->{$f} );
-	$field_line .= sprintf("%-$widths{$f}s ",$s);
+	$field_line .= sprintf("%-$widths{$f}s ",$s) if( $widths{$f} );
 	}
     $field_line =~ s/\s*$//;
     push( @pretty, $field_line );
     if( ($name=$e->{Primary}) && ($name =~ /\w/) )
 	{
 	my $val = $e->{MAC};
-	push( @ethers, "$val\t$name" ) if( $val && $val =~ /:/ );
+	if( $val && $val =~ /:/ )
+	    {
+	    push( @ethers, "$val\t$name" );
+	    my $txt = sprintf("host %-$widths{Primary}s { hardware ethernet %-$widths{MAC}s;",
+		$name, $val );
+	    if( $seen{IPv4} )
+	        {
+		my $val = $e->{IPv4};
+		$txt .=
+		    ( $val && $val =~ /\./
+		    ? sprintf(" fixed-address %-$widths{IPv4}s;",$val )
+		    : sprintf("               %-$widths{IPv4}s ","" ) );
+		}
+	    if( $seen{IPv6} )
+	        {
+		my $val = $e->{IPv6};
+		$txt .=
+		    ( $val && $val =~ /:/
+		    ? sprintf(" fixed-address6 %-$widths{IPv6}s;",$val )
+		    : sprintf("                %-$widths{IPv6}s ","" ) );
+		}
+	    $txt .= " }";
+	    $txt =~ s/(\s*);/;$1/g;
+	    push( @dhcpds, $txt );
+	    }
 
 	foreach $val ( $e->{IPv4}, $e->{IPv6} )
 	    {
@@ -215,6 +253,7 @@ foreach my $line ( &read_lines($ARGS{redirects}) )
     }
 &write_lines( "$ARGS{ethers_file}.new", @ethers );
 &write_lines( "$ARGS{hosts_file}.new", @hosts );
+&write_lines( "$ARGS{dhcpd_file}.new", @dhcpds );
 &write_lines( "$ARGS{named_files}/$LC_DOMAIN.new", @nameds );
 &write_lines( "$ARGS{output_file}.new", @pretty );
 
@@ -244,10 +283,13 @@ if( $exstat == 0 )
 	chmod( 0644, "$fn.new" ) || die("Cannot chmod 644 $fn.new:  $!");
 	rename( "$fn.new", $fn ) || die("Cannot rename $fn.new to $fn  $!");
 	}
-    if ( ! -r $NAMED_PID )
-	{ print STDERR "No $NAMED_PID so cannot update named.\n"; }
-    else
-        { &echodo("kill -HUP `cat $NAMED_PID`"); }
+    foreach my $daemon ( keys %PIDS )
+	{
+	if ( ! -r $PIDS{$daemon} )
+	    { print STDERR "No $PIDS{$daemon} so cannot update $daemon.\n"; }
+	else
+	    { &echodo("kill -HUP `cat $PIDS{$daemon}`"); }
+	}
     }
 
 exit( $exstat );
