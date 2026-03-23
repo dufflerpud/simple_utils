@@ -61,7 +61,8 @@ my @DOCUMENT_ROOTS =
     "/var/www/html",
     "/srv/http",
     "/srv/www/htdocs",
-    "/boot/system/data/apache/htdocs"
+    "/boot/system/data/apache/htdocs",
+    "/usr/local/www/apache24/data"
     );
 
 my @DIRS =
