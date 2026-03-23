@@ -50,6 +50,7 @@ our %ONLY_ONE_DEFAULTS =
     "uid"		=> "",
     "gid"		=> "",
     "size"		=> "",
+    "linkcheck"		=> "",
     "checksum"		=> "",
     "perl"		=> "",
     "verbosity"		=> 0
@@ -87,9 +88,19 @@ $| = 1;
 sub usage
     {
     &fatal( @_, "",
-	"Usage:  $cpi_vars::PROG <possible arguments>",
-	"where <possible arguments> are:",
+	"Usage:  $cpi_vars::PROG <possible arguments> {<file>}",
+	"where <file>s are specified, <possible arguments> are:",
 	"    -v1 or -v0  Turn verbosity on or off",
+	"    -u <uid>",
+	"    -g <gid>",
+	"    -m <mode>",
+	"    -c <checksum>",
+	"    -l1 or -l0  Check if protections match with symlinks",
+	"and when <file>s are not specified, <possible arguments> are:",
+	"    -u1 or -u0  Include -u checks in list of checks",
+	"    -g1 or -g0  include -g checks in list of checks",
+	"    -m1 or -m0  Include -m checks in list of checks",
+	"    -c1 or -c0  Include -c checks in list of checks",
 	"",
 	"Create a script of commands to verify the correctness of an",
 	"installation."
@@ -168,20 +179,30 @@ sub check_files
     {
     $ARGS{mode} = oct( $ARGS{mode} ) if( $ARGS{mode} );
 
-    my $www_top = &find_www_top();
+    my $www_top;
 
     foreach my $fname ( @files )
         {
-	if( $fname eq "WWWTOP" )
-	    { $fname = $www_top; }
-	else
-	    { $fname =~ s+^WWWTOP/+$www_top/+; }
+	if( $fname eq "WWWTOP" || $fname =~ m:^WWWTOP/: )
+	    {
+	    $www_top ||= &find_www_top();
+	    $fname =~ s+^WWWTOP+$www_top+;
+	    }
 	if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size)=lstat($fname) )
 	    {
 	    my @mismatches;
-	    push( @mismatches,
-		sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
-		if( $ARGS{mode} && $ARGS{mode} ne $mode );
+	    if( $ARGS{mode} ne "" && ( ! -l _ || $ARGS{linkcheck} ) )
+		{
+		push( @mismatches,
+		    sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
+		    if( $ARGS{mode} ne $mode );
+		}
+	    else
+		{	# Symlink protections only have meaning on BSD
+		push( @mismatches,
+		    sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
+		    if( ($ARGS{mode}>>9) ne ($mode>>9) );
+		}
 	    push( @mismatches,
 		sprintf("owner (%07o vs %07o)", $uid, $ARGS{uid}) )
 		if( $ARGS{uid} && $ARGS{uid} ne $uid );
