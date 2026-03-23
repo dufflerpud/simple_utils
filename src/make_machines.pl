@@ -84,6 +84,8 @@ sub read_machine_entries
 	        { $p->{IPv4} = $tok; }
 	    elsif( $tok =~ /:/ )
 	        { $p->{IPv6} = $tok; }
+	    elsif( $tok =~ /^-.*/ )	# Skip placeholders
+	        {}
 	    elsif( ! $p->{Primary} )
 	        { $p->{Primary} = $tok; }
 	    else
