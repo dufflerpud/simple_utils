@@ -205,7 +205,6 @@ sub check_files
 			sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
 			if( ($ARGS{mode}>>9) ne ($mode>>9) );
 		    }
-		fi
 		}
 	    push( @mismatches,
 		sprintf("owner (%07o vs %07o)", $uid, $ARGS{uid}) )
