@@ -191,17 +191,21 @@ sub check_files
 	if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size)=lstat($fname) )
 	    {
 	    my @mismatches;
-	    if( $ARGS{mode} ne "" && ( ! -l _ || $ARGS{linkcheck} ) )
-		{
-		push( @mismatches,
-		    sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
-		    if( $ARGS{mode} ne $mode );
-		}
-	    else
-		{	# Symlink protections only have meaning on BSD
-		push( @mismatches,
-		    sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
-		    if( ($ARGS{mode}>>9) ne ($mode>>9) );
+	    if( $ARGS{mode} ne "" )
+	        {
+		if( ! -l _ || $ARGS{linkcheck} )
+		    {
+		    push( @mismatches,
+			sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
+			if( $ARGS{mode} ne $mode );
+		    }
+		else
+		    {	# Symlink protections only have meaning on BSD
+		    push( @mismatches,
+			sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
+			if( ($ARGS{mode}>>9) ne ($mode>>9) );
+		    }
+		fi
 		}
 	    push( @mismatches,
 		sprintf("owner (%07o vs %07o)", $uid, $ARGS{uid}) )
