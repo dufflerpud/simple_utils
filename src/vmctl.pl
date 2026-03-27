@@ -215,9 +215,9 @@ foreach my $current_vm ( @vmlist )
 	&vm_states() if( ! %STATES );
 	printf("%-6s %-20s %s\n",$STATES{$current_vm}{id},$current_vm,$STATES{$current_vm}{state});
 	if( ! $rem )
-	    { system("${rem}ls -ldh $BASE/$current_vm $BASE/*/$current_vm.*"); }
+	    { system("${rem}ls -ldh $BASE/*/$current_vm.*"); }
 	else
-	    { system("${rem} \"ls -ldh $BASE/$current_vm $BASE/*/$current_vm.*\""); }
+	    { system("${rem} \"ls -ldh $BASE/*/$current_vm.*\""); }
 	}
     elsif( $ARGS{action} eq "setup_links" )
         {
