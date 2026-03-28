@@ -113,6 +113,8 @@ sub usage
 #########################################################################
 sub find_www_top
     {
+    return $cpi_vars::WEBTOP
+	if( defined($cpi_vars::WEBTOP) && -d $cpi_vars::WEBTOP );
     foreach my $docroot ( @DOCUMENT_ROOTS )
         {
 	return $docroot.$cpi_vars::WEBOFFSET
