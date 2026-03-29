@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	cp_verify - Create a script to run to check an installation
+#indx#	verifile - Check attributes (and checksums) of a file
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	cp_verify - Create a script to run to check an installation
+#doc#	verifile - Check attributes (and checksums) of a file
 ########################################################################
 
 use strict;
@@ -90,14 +90,14 @@ sub usage
     {
     &fatal( @_, "",
 	"Usage:  $cpi_vars::PROG <possible arguments> {<file>}",
-	"<possible arguments> are:",
-	"    -u1 or -u0  Include -u checks in list of checks",
-	"    -g1 or -g0  include -g checks in list of checks",
-	"    -m1 or -m0  Include -m checks in list of checks",
-	"    -c1 or -c0  Include -c checks in list of checks",
-	"",
-	"Create a script of commands to verify the correctness of an",
-	"installation."
+	"where <file>s are specified, <possible arguments> are:",
+	"    -v1 or -v0  Turn verbosity on or off",
+	"    -p1 or -p0  Run with perl -c or not",
+	"    -u <uid>",
+	"    -g <gid>",
+	"    -m <mode>",
+	"    -c <checksum>",
+	"    -l1 or -l0  Check if protections match with symlinks"
 	);
     }
 
@@ -117,54 +117,81 @@ sub find_www_top
     }
 
 #########################################################################
-#	Output command to confirm a file is correct.			#
-#	Will recurse with directories.					#
+#	Go through file specified to make sure they have the correct	#
+#	attributes.							#
 #########################################################################
-sub do_one_file
+sub check_files
     {
-    my( $filename, $relativename ) = @_;
-    my @cmds;
-    if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size) = lstat($filename) )
+    $ARGS{mode} = oct( $ARGS{mode} ) if( $ARGS{mode} );
+
+    my $www_top;
+
+    foreach my $fname ( @files )
         {
-	my $checksum = "."x32;
-	$checksum = &hashof( &read_file( $filename ) )
-	    if( -f _ && $ARGS{checksum} );
-	my @cmd = ( "/usr/local/bin/verifile" );
-	push( @cmd, sprintf("-m%07o",$mode) )		if( $ARGS{mode} );
-	push( @cmd, sprintf("-u%-6d",$uid) )		if( $ARGS{uid} );
-	push( @cmd, sprintf("-g%-6d",$gid) )		if( $ARGS{gid} );
-	push( @cmd, sprintf("-c %s",$checksum) )	if( $ARGS{checksum} );
-	my $run_perl = 0;
-	if( $ARGS{perl} && -f $filename )
+	if( $fname eq "WWWTOP" || $fname =~ m:^WWWTOP/: )
 	    {
-	    my @lines = &read_lines( "file '$filename' |" );
-	    $run_perl = 1 if( $lines[0] =~ /Perl script text/ );
+	    $www_top ||= &find_www_top();
+	    $fname =~ s+^WWWTOP+$www_top+;
 	    }
-	push( @cmd, "-p$run_perl" );
-	push( @cmd, &quotes($relativename) );
-	push( @cmds, join(" ",@cmd) );
-	if( ! -l $filename && -d $filename )
+	if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size)=lstat($fname) )
 	    {
-	    foreach $_ ( &files_in( $filename ) )
+	    my @mismatches;
+	    if( $ARGS{mode} ne "" )
 	        {
-		push( @cmds, &do_one_file("$filename/$_","$relativename/$_") );
+		if( ! -l _ || $ARGS{linkcheck} )
+		    {
+		    push( @mismatches,
+			sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
+			if( $ARGS{mode} ne $mode );
+		    }
+		else
+		    {	# Symlink protections only have meaning on BSD
+		    push( @mismatches,
+			sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
+			if( ($ARGS{mode}>>9) ne ($mode>>9) );
+		    }
+		}
+	    push( @mismatches,
+		sprintf("owner (%07o vs %07o)", $uid, $ARGS{uid}) )
+		if( $ARGS{uid} && $ARGS{uid} ne $uid );
+	    push( @mismatches,
+		sprintf("group (%07o vs %07o)", $gid, $ARGS{gid}) )
+		if( $ARGS{gid} && $ARGS{gid} ne $gid );
+	    push( @mismatches,
+		sprintf("size (%d vs %d)", $gid, $ARGS{size}) )
+		if( $ARGS{size} && $ARGS{size} ne $gid );
+	    if( $ARGS{checksum} )
+		{
+		my $checksum =
+			( -f _
+			? &hashof( &read_file($fname) )
+			: "."x32 );
+		push( @mismatches,
+		    sprintf("checksum (%s vs %s)", $checksum, $ARGS{checksum}) )
+		    if( $ARGS{checksum} ne $checksum );
+	        }
+	    if( @mismatches )
+	        { push( @problems,
+		    ucfirst( &list_items( "mismatch", "and", @mismatches )
+			. " in $fname." ) );
+	    	}
+	    if( $ARGS{perl} && -f $fname )
+		{
+		my $result =
+		    &read_file(
+			"perl -I/usr/local/lib/perl -c ".&quotes($fname)." 2>&1 |" );
+		push( @problems, "perl failure for $fname" )
+		    if( $result !~ /syntax OK/ );
 		}
 	    }
+	else
+	    { push( @problems, "$fname does not exist." ); }
 	}
-    return @cmds;
-    }
-
-#########################################################################
-#	Create a list of commands to verify an installation.		#
-#########################################################################
-sub generate_list
-    {
-    my @cmds = &do_one_file( &find_www_top(), "WWWTOP" );
-    foreach my $file_to_check ( @DIRS )
+    if( @problems )
         {
-	push( @cmds, &do_one_file( $file_to_check, $file_to_check ) );
+	print STDERR map {"$_\n"} @problems;
+	$exit_stat = 1;
 	}
-    print STDOUT map{"$_\n"} @cmds;
     }
 
 #########################################################################
@@ -176,9 +203,9 @@ if( 0 && $ENV{SCRIPT_NAME} )
 else
     {
     &parse_arguments();
-    &usage("Do not specify any files.") if(@files);
+    &usage("No file specified.") if( ! @files );
     $cpi_vars::VERBOSITY if(0);
     $cpi_vars::VERBOSITY = $ARGS{verbosity};
-    &generate_list();
+    &check_files();
     }
 &cleanup($exit_stat||0);
