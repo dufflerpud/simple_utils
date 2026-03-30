@@ -176,9 +176,9 @@ sub get_pdf_files
 	    $fl->{t} = $2;
 	    }
 	elsif( $fname=~/^(.*)(\.[a-zA-Z0-9]+)$/ )
-	    { $fl->{t} = &filename_to_text($1); }
+	    { $fl->{t} = &filename_to_title($1); }
 	else
-	    { $fl->{t} = &filename_to_text($fname); }
+	    { $fl->{t} = &filename_to_title($fname); }
 	if( $fl->{name} !~ /\.([A-Za-z0-9]+)$/ )
 	    { die $fl->{name} . " is not a reasonable filename.\n"; }
 	elsif( ! -r $fl->{name} )
