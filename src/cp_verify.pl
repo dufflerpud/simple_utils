@@ -142,6 +142,7 @@ sub do_one_file
 	    }
 	push( @cmd, "-p$run_perl" );
 	push( @cmd, &quotes($relativename) );
+	push( @cmd, '|| error_count=`expr $error_count + 1`' );
 	push( @cmds, join(" ",@cmd) );
 	if( ! -l $filename && -d $filename )
 	    {
@@ -159,11 +160,13 @@ sub do_one_file
 #########################################################################
 sub generate_list
     {
-    my @cmds = &do_one_file( &find_www_top(), "WWWTOP" );
+    my @cmds = ( "error_count=0" );
+    push( @cmds, &do_one_file( &find_www_top(), "WWWTOP" ) );
     foreach my $file_to_check ( @DIRS )
         {
 	push( @cmds, &do_one_file( $file_to_check, $file_to_check ) );
 	}
+    push( @cmds, 'INFO:  verify error count = $error_count.' );
     print STDOUT map{"$_\n"} @cmds;
     }
 
