@@ -43,9 +43,10 @@ use cpi_filename qw( just_ext_of );
 use cpi_perl qw( quotes );
 use cpi_inlist qw( inlist );
 use cpi_english qw( plural );
+use cpi_vars;
 use Data::Dumper;
 
-my $CVT		= "/usr/local/bin/nene";
+my $CVT		= "$cpi_vars::USRLOCAL/bin/nene";
 my $FFMPEG	= "ffmpeg -loglevel error";
 my $GS		= "gs -q -dBATCH -dNOPAUSE";
 

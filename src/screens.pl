@@ -52,7 +52,7 @@ my $BASE_DIR = $ENV{SCRIPT_FILENAME};
 if( $BASE_DIR )
     { $BASE_DIR =~ s/\.cgi$//; }
 else
-    { $BASE_DIR = "/usr/local/projects/octagon"; }
+    { $BASE_DIR = "$cpi_vars::USRLOCAL/projects/octagon"; }
 
 our %ONLY_ONE_DEFAULTS =
     (

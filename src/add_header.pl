@@ -48,7 +48,7 @@ use cpi_vars;
 # Put constants here
 
 my $PROJECT		= "routing";
-my $BASEDIR		= "/usr/local/projects/$PROJECT";
+my $BASEDIR		= "$cpi_vars::USRLOCAL/projects/$PROJECT";
 my $TODAY		= `date '+%Y-%m-%d'`;		chomp($TODAY);
 my $YEAR		= `date '+%Y'`;			chomp($YEAR);
 my $HDR_STRING		= "\@HDR\@";

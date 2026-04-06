@@ -57,7 +57,7 @@ no warnings 'recursion';
 # Put constants here
 
 my $TMP = "/tmp/$cpi_vars::PROG.$$";
-my $NENE = "/usr/local/bin/nene";
+my $NENE = "$cpi_vars::USRLOCAL/bin/nene";
 
 our %ONLY_ONE_DEFAULTS =
     (

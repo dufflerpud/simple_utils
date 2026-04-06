@@ -44,7 +44,7 @@ use cpi_arguments qw( parse_arguments );
 #airscan:e0:Brother MFC-L3720CDW series
 
 my $TMP="/tmp/$cpi_vars::PROG";		# or /tmp/$cpi_vars::PROG.$$
-my $CVT="/usr/local/bin/nene";
+my $CVT="$cpi_vars::USRLOCAL/bin/nene";
 my $AUTOMATIC="ADF";		# Was "Automatic", not "ADF"
 my $PAMEXT="pnm";		# Pamcut likes this best
 

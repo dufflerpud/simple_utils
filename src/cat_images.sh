@@ -37,7 +37,7 @@ TBLAR_ARGS=-topbottom
 GS_ARGS="-q -dBATCH -dNOPAUSE"
 REF=/home/chris/lib/template.odg
 ZIP=/home/chris/bin/oozip
-CVT=/usr/local/bin/nene
+CVT=nene
 VERBOSITY=0
 
 #PAMCUT_ARGS="-pad --height=3300"

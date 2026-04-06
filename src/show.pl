@@ -44,7 +44,7 @@ use cpi_vars;
 # Put constants here
 
 my $TMP = "/tmp/$cpi_vars::PROG.$$";
-my $OCT_DIR = "/usr/local/projects/octagon";
+my $OCT_DIR = "$cpi_vars::USRLOCAL/projects/octagon";
 my $CURRENT_SCREENS = "$OCT_DIR/state/screens";
 
 our %ONLY_ONE_DEFAULTS =
@@ -73,7 +73,7 @@ our %ONLY_ONE_DEFAULTS =
     );
 
 my @CLIP_SELECTIONS=("XA_PRIMARY","XA_SECONDARY","XA_CLIPBOARD","c");
-my $CVT="/usr/local/bin/nene";
+my $CVT="$cpi_vars::USRLOCAL/bin/nene";
 my $MPV="mpv --really-quiet";
 my $YOUTUBEDL="youtube-dl";
 

@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 #
 #indx#	unique_name - Fill in unique digits to create a filename
 #@HDR@	$Id$

@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 #
 #indx#	setup_access_point - Configure local WIFI card to be access point
 #@HDR@	$Id$
@@ -34,6 +34,8 @@
 
 use strict;
 
+use lib "/usr/local/lib/perl";
+use cpi_vars;
 use Data::Dumper;
 
 # Put constants here
@@ -45,7 +47,7 @@ my $TMP = "/tmp/$PROG.$$";
 my $CONFIG_BASE = "$ENV{HOME}/.config/$PROG";
 
 my $BASEDIR = "%%PROJECTDIR%%";
-$BASEDIR = "/usr/local/projects/$PROG" if( ! -d $BASEDIR );
+$BASEDIR = "$cpi_vars::USRLOCAL/projects/$PROG" if( ! -d $BASEDIR );
 
 my %ONLY_ONE_DEFAULTS =
     (

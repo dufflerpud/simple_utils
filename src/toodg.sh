@@ -62,10 +62,10 @@ if [ -e $filebase.pdf ] ; then
     pdftoppm $filebase.pdf $TMPDIR/Pictures/file
 elif [ -d $filebase ] ; then
     for fn in $filebase/* ; do
-        /usr/local/bin/nene $fn $TMPDIR/Pictures/file-`basename $fn`.ppm
+        nene $fn $TMPDIR/Pictures/file-`basename $fn`.ppm
     done
 elif [ -f $filebase ] ; then
-    /usr/local/bin/nene $filebase $TMPDIR/Pictures/file-`basename $fn`.ppm
+    nene $filebase $TMPDIR/Pictures/file-`basename $fn`.ppm
 fi
 
 (

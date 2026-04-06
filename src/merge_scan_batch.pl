@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 #
 #indx#	merge_scan_batch - Collect multiple pages into a single document
 #@HDR@	$Id$
@@ -47,7 +47,7 @@ use cpi_sortable qw( numeric_sort );
 our %ARGS;
 our @problems;
 
-my $CVT		= "/usr/local/bin/nene";
+my $CVT		= "$cpi_vars::USRLOCAL/bin/nene";
 my $PAMCUT_EXT	= "pnm";
 #my $end_ext	= "jpg";
 my $exit_stat	= 0;

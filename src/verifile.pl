@@ -63,15 +63,15 @@ my @DOCUMENT_ROOTS =
     "/srv/http",
     "/srv/www/htdocs",
     "/boot/system/data/apache/htdocs",
-    "/usr/local/www/apache24/data",
+    "$cpi_vars::USRLOCAL/www/apache24/data",
     "/var/apache2/2.4/htdocs"
     );
 
 my @DIRS =
     (
-    "/usr/local/projects",
-    "/usr/local/bin",
-    "/usr/local/lib"
+    "$cpi_vars::USRLOCAL/projects",
+    "$cpi_vars::USRLOCAL/bin",
+    "$cpi_vars::USRLOCAL/lib"
     );
 
 # Put variables here.

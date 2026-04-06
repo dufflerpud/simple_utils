@@ -63,15 +63,15 @@ my @DOCUMENT_ROOTS =
     "/srv/http",
     "/srv/www/htdocs",
     "/boot/system/data/apache/htdocs",
-    "/usr/local/www/apache24/data",
+    "$cpi_vars::USRLOCAL/www/apache24/data",
     "/var/apache2/2.4/htdocs"
     );
 
 my @DIRS =
     (
-    "/usr/local/projects",
-    "/usr/local/bin",
-    "/usr/local/lib"
+    "$cpi_vars::USRLOCAL/projects",
+    "$cpi_vars::USRLOCAL/bin",
+    "$cpi_vars::USRLOCAL/lib"
     );
 
 # Put variables here.
@@ -129,7 +129,7 @@ sub do_one_file
 	my $checksum = "."x32;
 	$checksum = &hashof( &read_file( $filename ) )
 	    if( -f _ && $ARGS{checksum} );
-	my @cmd = ( "/usr/local/bin/verifile" );
+	my @cmd = ( "$cpi_vars::USRLOCAL/bin/verifile" );
 	push( @cmd, sprintf("-m%07o",$mode) )		if( $ARGS{mode} );
 	push( @cmd, sprintf("-u%-6d",$uid) )		if( $ARGS{uid} );
 	push( @cmd, sprintf("-g%-6d",$gid) )		if( $ARGS{gid} );

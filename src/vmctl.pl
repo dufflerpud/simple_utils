@@ -333,7 +333,7 @@ foreach my $current_vm ( @vmlist )
 	}
     elsif( $ARGS{action} eq "setup_links" )
         {
-	&ask_do("rm -f $current_vm; ln -s /usr/local/bin/$cpi_vars::PROG $current_vm");
+	&ask_do("rm -f $current_vm; ln -s $cpi_vars::USRLOCAL/bin/$cpi_vars::PROG $current_vm");
 	}
     elsif( $ARGS{action} eq "reset_media" )
 	{

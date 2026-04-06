@@ -51,7 +51,7 @@ our %ONLY_ONE_DEFAULTS =
     "i"	=>	"",
     );
 
-my $CVT = "/usr/local/bin/nene";
+my $CVT = "$cpi_vars::USRLOCAL/bin/nene";
 
 # Put variables here.
 

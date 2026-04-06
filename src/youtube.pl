@@ -47,7 +47,7 @@ use cpi_inlist qw( inlist );
 
 my $PROG = ( $_=$0, s+.*/++, $_ );
 my $TMP = "/var/tmp/$PROG.$$";
-#my $YTDLP = "/usr/local/bin/youtube-dl";
+#my $YTDLP = "$cpi_vars::USRLOCAL/bin/youtube-dl";
 #my $YTDLP = "/bin/yt-dlp -4";
 my $YTDLP = "yt-dlp -4";
 our %ONLY_ONE_DEFAULTS =
@@ -56,7 +56,7 @@ our %ONLY_ONE_DEFAULTS =
     "d"			=>	"$YTDLP -q",
     "title"		=>	"$YTDLP --get-title",
     "u"			=>	"$YTDLP -g",
-    "converter"		=>	"/usr/local/bin/nene",
+    "converter"		=>	"$cpi_vars::USRLOCAL/bin/nene",
     "maximum"		=>	"",
     "mplayer"		=>	"/bin/mplayer -really-quiet",
     "trim"		=>	"/home/chris/bin/trim",
@@ -105,7 +105,7 @@ sub usage
 	"\t-d ($YTDLP -q)",
 	"\t-title ($YTDLP --get-title)",
 	"\t-u ($YTDLP -g)",
-	"\t-converter (/usr/local/bin/nene)",
+	"\t-converter ($cpi_vars::USRLOCAL/bin/nene)",
 	"\t-maximum <maximum number to download>",
 	"\t-mplayer <media player> (/bin/mplayer -really-quiet)",
 	"\t-trim <trim program> (/home/chris/bin/trim)",

@@ -51,7 +51,7 @@ use cpi_vars;
 
 my $TMP = "/tmp/$cpi_vars::PROG.$$";
 my $MIME_TYPES = "/etc/mime.types";
-my $CVT = "/usr/local/bin/nene";
+my $CVT = "$cpi_vars::USRLOCAL/bin/nene";
 
 my %BASE_TYPE_TO_EXT =
     (
