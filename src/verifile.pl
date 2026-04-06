@@ -138,6 +138,7 @@ sub check_files
 	    my @mismatches;
 	    if( $ARGS{mode} ne "" )
 	        {
+		$mode &= 0xffff;
 		if( ! -l _ || $ARGS{linkcheck} )
 		    {
 		    push( @mismatches,
