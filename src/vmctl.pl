@@ -37,8 +37,11 @@ my $DISK_FMT="qcow2";
 my $ARCH="x86_64";
 my @BOOT_ARGS=( "-m 2048 -cpu max -smp 4 -accel kvm" );
 my $USER = $ENV{USER};
+my $CURHOST = `hostname`; chomp($CURHOST);
 my $VMHOST = "vmhost0";
-my $VIRSH_URI="qemu+ssh://${USER}\@$VMHOST/system";
+my $SSHUSERHOST = $USER.'@'.$VMHOST;
+my $RUNNING_ON_VMHOST = &same_host( $VMHOST );
+my $VIRSH_URI="qemu+ssh://$SSHUSERHOST/system";
 
 my $BASE = "/var/lib/libvirt/images";
 my %DIRS =
@@ -46,12 +49,20 @@ my %DIRS =
     Archives	=> "$BASE/Archives",
     Freezer	=> "$BASE/Freezer",
     ISOs	=> "$BASE/ISOs",
-    Disks	=> "$BASE/Disks"
+    Disks	=> "$BASE/Disks",
+    Commands	=> "$BASE/Commands",
+    Logs	=> "$BASE/Logs"
     );
 
 use lib "/usr/local/lib/perl";
-use cpi_file qw( echodo fatal files_in read_lines );
+use cpi_file qw( echodo fatal files_in read_lines read_file );
 use cpi_arguments qw( parse_arguments );
+use cpi_perl qw( quotes );
+use cpi_inlist qw( inlist );
+use cpi_sortable qw( numeric_sort );
+use cpi_filename qw( basename );
+use cpi_time qw( time_string );
+use cpi_vars;
 
 our @non_switches;		# Used for parsing arguments
 our @problems;
@@ -79,8 +90,26 @@ sub usage()
 	"    -freeze_media    (same as '-action=freeze_media')",
 	"    -reset_media     (same as '-action=reset_media')",
 	"    -archive_media   (same as '-action=archive_media')",
+	"    -status          (same as '-action=status')",
 	"    -action <action>",
 	"    -command <script name>" );
+    }
+
+#########################################################################
+#	Return true if we're running on the named host.			#
+#########################################################################
+sub same_host
+    {
+    my( $host0, $host1 ) = @_;
+    $host0 ||= $CURHOST;	$host0=lc($host0);
+    $host1 ||= $CURHOST;	$host1=lc($host1);
+    return 1 if( $host1 eq $host0 );
+    foreach my $hostline ( &read_lines("/etc/hosts") )
+        {
+	my @toks = split(/\s+/,lc($hostline));
+	return 1 if( &inlist($host0,@toks) && &inlist($host1,@toks) );
+	}
+    return undef;
     }
 
 #########################################################################
@@ -102,7 +131,9 @@ sub ask_do()
     }
 
 #########################################################################
-#	Return the state of the virtual machines			#
+#	Return the state of the virtual machines.			#
+#	Arguably more importantly, returns a table indexed by all	#
+#	possible names for those machines.				#
 #########################################################################
 sub vm_states
     {
@@ -111,8 +142,16 @@ sub vm_states
 	$line =~ s/^\s+//;
 	my @toks = split(/\s+/,$line);
 	my( $id, $name, @state ) = split(/\s+/,$line);
-	$STATES{$name} = { id=>$id, state=>join(" ",@state) }
+	$STATES{$name} = $STATES{lc($name)} =
+	    { id=>$id, best=>$name, state=>join(" ",@state) }
 	    if( $name && $name ne "Name" );
+	}
+
+    foreach my $line ( &read_lines("/etc/hosts") )
+        {
+	my @toks = split(/\s+/,lc($line));
+	my( $match ) = grep( $STATES{$_}, @toks );
+	grep( $STATES{$_}=$STATES{$match}, @toks ) if( $match );
 	}
     return %STATES;
     }
@@ -123,16 +162,37 @@ sub vm_states
 sub vm_names
     {
     &vm_states() if( ! %STATES );
-    return sort keys %STATES;
+    my %seen_bests = map { ($STATES{$_}->{best}, 1) } keys %STATES;
+    return &numeric_sort( keys %seen_bests );
     }
 
 #########################################################################
-#	Returns true if specified machine is a vm we know about.	#
+#	Returns best name of specified vm if it's one we know about.	#
 #########################################################################
-sub valid_vmname
+sub best_vmname
     {
+    my( $name ) = @_;
     &vm_states() if( ! %STATES );
-    return ( $STATES{$_[0]} ? 1 : undef );
+    my $p = $STATES{ lc( $name ) };
+    return ( $p ? $p->{best} : undef );
+    }
+
+#########################################################################
+#	Make sure the named VM is alive.				#
+#########################################################################
+sub wake_vm
+    {
+    my( $current_vm, $timer ) = @_;
+    $timer ||= 120;	# 2 minutes
+
+    &echodo("virsh -c $VIRSH_URI start $current_vm");
+
+    do  {
+	return 1 if( &read_file("ssh $current_vm echo I am alive. |","") =~ /alive/ );
+	sleep(1);
+	} while( $timer-- > 0 );
+    print STDERR "Failed to wake $current_vm after $timer seconds.";
+    return undef;
     }
 
 #########################################################################
@@ -141,6 +201,7 @@ sub valid_vmname
 
 %ARGS = &parse_arguments({
     non_switches	=>	\@non_switches,
+    flags		=>	[ "boot", "shutdown" ],
     switches=>
     	{
 	"verbosity"	=>	0,
@@ -153,71 +214,122 @@ sub valid_vmname
 	"disk_boot"	=>	{ alias=>["-action=disk_boot"] },
 	"iso_boot"	=>	{ alias=>["-action=iso_boot"] },
 	"ls_media"	=>	{ alias=>["-action=ls_media"] },
+	"status"	=>	{ alias=>["-action=status"] },
 	"freeze_media"	=>	{ alias=>["-action=freeze_media"] },
 	"reset_media"	=>	{ alias=>["-action=reset_media"] },
 	"archive_media"	=>	{ alias=>["-action=archive_media"] },
-	"action"	=>	[ "ls_media", "disk_boot", "iso_boot", "freeze_media", "reset_media", "archive_media", "setup_links" ],
+	"query_from_vm"	=>	{ alias=>["-action=query_from_vm"] },
+	"action"	=>	[	"multi_command", "status",
+					"ls_media", "disk_boot",
+					"iso_boot", "freeze_media",
+					"reset_media", "archive_media",
+					"setup_links", "query_from_vm" ],
 	"command"	=>	""
 	}
     });
 
-if( &valid_vmname( $cpi_vars::PROG ) )
+if( $_ = &best_vmname( $cpi_vars::PROG ) )
     {
-    unshift( @non_switches, $cpi_vars::PROG );
+    unshift( @non_switches, $_ );
     $cpi_vars::PROG = "vmctl";
     }
 
 my %use_vm;
-foreach my $name0 ( @non_switches )
+foreach my $non_switch ( @non_switches )
     {
-    if( $name0 eq "all" || &valid_vmname( $name0 ) )
+    my $name0;
+    if( $non_switch eq "all" || ($name0=&best_vmname($non_switch)) )
         {
-	foreach my $name1 ( $name0 eq "all" ? &vm_names() : ($name0) )
+	foreach my $name1 ( $non_switch eq "all" ? &vm_names() : ($name0) )
 	    {
 	    push(@problems,"$name1 specified multiple times.")
 		if( $use_vm{$name1}++ );
 	    }
         }
-    elsif( $name0 =~ /.*\.iso$/ )
+    elsif( $non_switch =~ /.*\.iso$/ )
     	{
-	$ARGS{ISO} = $name0;
-	push(@problems,"Cannot read $name0.") if( ! -r $name0 );
+	$ARGS{ISO} = $non_switch;
+	push(@problems,"Cannot read $non_switch.") if( ! -r $non_switch );
 	}
-    elsif( $name0 =~ /[1-9](\d*)G/ )
+    elsif( $non_switch =~ /[1-9](\d*)G/ )
         {
-	push(@problems,"Size specified multiple times with $name0.") if( $ARGS{size} );
-	$ARGS{size} = $name0;
+	push(@problems,"Size specified multiple times with $non_switch.") if( $ARGS{size} );
+	$ARGS{size} = $non_switch;
 	}
     else
         {
-	push( @problems, "WTF is \"$name0\"?" );
+	push( @problems, "WTF is \"$non_switch\"?" );
 	}
     }
 
 my @vmlist = sort keys %use_vm;
 
-push(@problems,"No vms specified.") if( ! @vmlist );
+$ARGS{action} = "status"
+    if( ( $ARGS{action} eq "multi_command" )
+	&& !$ARGS{boot} && !$ARGS{shutdown} && !$ARGS{command} );
+
+if( ! @vmlist )
+    {
+    if( $ARGS{action} eq "status" )
+        { @vmlist = &vm_names(); }
+    else
+	{ push(@problems,"No vms specified."); }
+    }
 
 &usage(@problems) if( @problems);
+
+$cpi_vars::VERBOSITY = $ARGS{verbosity};
 
 $ARGS{size} ||= "10G";
 
 push( @BOOT_ARGS, "-nographic -serial mon:stdio" )	# -append console=ttyS0"
     if( $ARGS{console} eq "serial" );
 
-my $rem = "ssh vmhost0 ";
-$rem = "";
+my $rem = ( $RUNNING_ON_VMHOST ? "" : "ssh $SSHUSERHOST " );
 
+&fatal("Cannot read $ARGS{command}")
+    if( $ARGS{command} && ! -r $ARGS{command} );
+
+my $printed_header = 0;
 foreach my $current_vm ( @vmlist )
     {
-    if( $ARGS{action} eq "ls_media" )
+    if( $ARGS{action} eq "multi_command" )
+        {
+	print   "ARGS{boot}=[",($ARGS{boot}||"UNDEF"),"],",
+		" ARGS{command}=[",($ARGS{command}||"UNDEF"),"]",
+		" ARGS{shutdown}=[",($ARGS{shutdown}||"UNDEF"),"]\n";
+	if( $ARGS{boot} && ! &wake_vm( $current_vm ) )
+	    { $exit_status = 1; continue; }
+	if( $ARGS{command} )
+	    {
+	    my $bn = &basename( $ARGS{command} );
+	    my $log = &time_string("$DIRS{Logs}/$bn.%04d-%02d-%02d-%02d:%02d.$current_vm");
+	    &echodo("ssh -T $current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1");
+	    }
+	&echodo("virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
+	}
+    elsif( $ARGS{action} eq "multi_command" )	# Old, will not happen
+        {
+	if( $RUNNING_ON_VMHOST )
+	    { &ask_do("cp",&quotes($ARGS{command},"$DIRS{Commands}/$current_vm.sh")); }
+	else
+	    { &ask_do("scp",&quotes($ARGS{command},"${SSHUSERHOST}:$DIRS{Commands}/$current_vm.sh")); }
+	&ask_do("virsh -c $VIRSH_URI start $current_vm");
+	}
+    elsif( $ARGS{action} eq "ls_media" || $ARGS{action} eq "status" )
 	{
 	&vm_states() if( ! %STATES );
+
+	printf("%-6s %-20s %s\n","Id","VM name","Status") if( ! $printed_header++ );
 	printf("%-6s %-20s %s\n",$STATES{$current_vm}{id},$current_vm,$STATES{$current_vm}{state});
-	if( ! $rem )
-	    { system("${rem}ls -ldh $BASE/*/$current_vm.*"); }
-	else
-	    { system("${rem} \"ls -ldh $BASE/*/$current_vm.*\""); }
+	#print "rem=[${rem}]\n";
+	if( $ARGS{action} eq "ls_media" )
+	    {
+	    if( ! $rem )
+		{ system("ls -ldh $BASE/*/$current_vm.*"); }
+	    else
+		{ system("${rem} \"ls -ldh $BASE/*/$current_vm.*\""); }
+	    }
 	}
     elsif( $ARGS{action} eq "setup_links" )
         {
@@ -255,6 +367,18 @@ foreach my $current_vm ( @vmlist )
 	    "-drive file=$DIRS{Disks}/$current_vm.$DISK_FMT",
 	    "-boot d -cdrom",
 	    ( $ARGS{ISO} ? $ARGS{ISO} : "$DIRS{ISOs}/$current_vm.iso" ) );
+	}
+    elsif( $ARGS{action} eq "query_from_vm" )
+        {
+	if( ! chdir( $DIRS{Commands} ) )
+	    { &fatal("Cannot chdir($DIRS{Commands}):  $!"); }
+	elsif( -r "$current_vm.sh" )
+	    {
+	    if( rename( "$current_vm.sh", "$current_vm.doing" ) )
+		{ print &read_file( "$current_vm.doing" ); }
+	    else
+		{ fatal("Cannot rename $DIRS{Commands}/current_vm.sh to $DIRS{Commands}/current_vm.doing:  $!"); }
+	    }
 	}
     else
         { &fatal("Unknown command \"$ARGS{action}\"."); }
