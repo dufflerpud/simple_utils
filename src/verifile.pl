@@ -134,6 +134,8 @@ sub check_files
 	    $fname =~ s+^WWWTOP+$www_top+;
 	    }
 	$fname =~ s+^USRLOCAL+$cpi_vars::USRLOCAL+;
+	my @fnames = glob( $fname );
+	$fname = $fnames[0];
 	if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size)=lstat($fname) )
 	    {
 	    my @mismatches;
