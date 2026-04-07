@@ -125,6 +125,12 @@ sub check_files
     $ARGS{mode} = oct( $ARGS{mode} ) if( $ARGS{mode} );
 
     my $www_top;
+    my $usrlocal =
+	( -d "/boot/root/config/non-packaged"
+	? "/boot/root/config/non-packaged"
+	: -d "/usr/local"
+	? "/usr/local"
+	: undef );
 
     foreach my $fname ( @files )
         {
@@ -133,6 +139,7 @@ sub check_files
 	    $www_top ||= &find_www_top();
 	    $fname =~ s+^WWWTOP+$www_top+;
 	    }
+	$fname =~ s+^USRLOCAL+$usrlocal+ if( $usrlocal );
 	if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size)=lstat($fname) )
 	    {
 	    my @mismatches;
