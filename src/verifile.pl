@@ -126,70 +126,78 @@ sub check_files
 
     my $www_top;
 
-    foreach my $fname ( @files )
+    foreach my $fname_base ( @files )
         {
-	if( $fname eq "WWWTOP" || $fname =~ m:^WWWTOP/: )
+	my $fbase = $fname_base;
+	if( $fbase eq "WWWTOP" || $fbase =~ m:^WWWTOP/: )
 	    {
 	    $www_top ||= &find_www_top();
-	    $fname =~ s+^WWWTOP+$www_top+;
+	    $fbase =~ s+^WWWTOP+$www_top+;
 	    }
-	$fname =~ s+^USRLOCAL+$cpi_vars::USRLOCAL+;
-	my @fnames = glob( $fname );
-	$fname = $fnames[0];
-	if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size)=lstat($fname) )
+	$fbase =~ s+^USRLOCAL+$cpi_vars::USRLOCAL+;
+	my @fnames = glob( $fbase );
+	if( ! @fnames )
+	    { push( @problems, "glob($fbase) matches no files." ); }
+	else
 	    {
-	    my @mismatches;
-	    if( $ARGS{mode} ne "" )
-	        {
-		$mode &= 0xffff;
-		if( ! -l _ || $ARGS{linkcheck} )
+	    foreach my $fname ( @fnames )
+		{
+		if( my($dev,$ino,$mode,$nlink,$uid,$gid,$dev2,$size)=lstat($fname) )
 		    {
+		    my @mismatches;
+		    if( $ARGS{mode} ne "" )
+			{
+			$mode &= 0xffff;
+			if( ! -l _ || $ARGS{linkcheck} )
+			    {
+			    push( @mismatches,
+				sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
+				if( $ARGS{mode} ne $mode );
+			    }
+			else
+			    {	# Symlink protections only have meaning on BSD
+			    push( @mismatches,
+				sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
+				if( ($ARGS{mode}>>9) ne ($mode>>9) );
+			    }
+			}
 		    push( @mismatches,
-			sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
-			if( $ARGS{mode} ne $mode );
+			sprintf("owner (%07o vs %07o)", $uid, $ARGS{uid}) )
+			if( $ARGS{uid} && $ARGS{uid} ne $uid );
+		    push( @mismatches,
+			sprintf("group (%07o vs %07o)", $gid, $ARGS{gid}) )
+			if( $ARGS{gid} && $ARGS{gid} ne $gid );
+		    push( @mismatches,
+			sprintf("size (%d vs %d)", $gid, $ARGS{size}) )
+			if( $ARGS{size} && $ARGS{size} ne $gid );
+		    if( $ARGS{checksum} )
+			{
+			my $checksum =
+				( -f _
+				? &hashof( &read_file($fname) )
+				: "."x32 );
+			push( @mismatches,
+			    sprintf("checksum (%s vs %s)", $checksum, $ARGS{checksum}) )
+			    if( $ARGS{checksum} ne $checksum );
+			}
+		    if( @mismatches )
+			{ push( @problems,
+			    ucfirst( &list_items( "mismatch", "and", @mismatches )
+				. " in $fname." ) );
+			}
+		    if( $ARGS{perl} && -f $fname )
+			{
+			my $result =
+			    &read_file(
+				"perl -I/usr/local/lib/perl -c ".&quotes($fname)." 2>&1 |" );
+			push( @problems, "perl failure for $fname" )
+			    if( $result !~ /syntax OK/ );
+			}
 		    }
 		else
-		    {	# Symlink protections only have meaning on BSD
-		    push( @mismatches,
-			sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
-			if( ($ARGS{mode}>>9) ne ($mode>>9) );
-		    }
-		}
-	    push( @mismatches,
-		sprintf("owner (%07o vs %07o)", $uid, $ARGS{uid}) )
-		if( $ARGS{uid} && $ARGS{uid} ne $uid );
-	    push( @mismatches,
-		sprintf("group (%07o vs %07o)", $gid, $ARGS{gid}) )
-		if( $ARGS{gid} && $ARGS{gid} ne $gid );
-	    push( @mismatches,
-		sprintf("size (%d vs %d)", $gid, $ARGS{size}) )
-		if( $ARGS{size} && $ARGS{size} ne $gid );
-	    if( $ARGS{checksum} )
-		{
-		my $checksum =
-			( -f _
-			? &hashof( &read_file($fname) )
-			: "."x32 );
-		push( @mismatches,
-		    sprintf("checksum (%s vs %s)", $checksum, $ARGS{checksum}) )
-		    if( $ARGS{checksum} ne $checksum );
-	        }
-	    if( @mismatches )
-	        { push( @problems,
-		    ucfirst( &list_items( "mismatch", "and", @mismatches )
-			. " in $fname." ) );
-	    	}
-	    if( $ARGS{perl} && -f $fname )
-		{
-		my $result =
-		    &read_file(
-			"perl -I/usr/local/lib/perl -c ".&quotes($fname)." 2>&1 |" );
-		push( @problems, "perl failure for $fname" )
-		    if( $result !~ /syntax OK/ );
+		    { push( @problems, "$fname does not exist." ); }
 		}
 	    }
-	else
-	    { push( @problems, "$fname does not exist." ); }
 	}
     if( @problems )
         {
