@@ -188,8 +188,10 @@ sub wake_vm
     &echodo("virsh -c $VIRSH_URI start $current_vm");
 
     do  {
-	return 1 if( &read_file("ssh $current_vm echo I am alive. |","") =~ /alive/ );
-	sleep(1);
+        my $retval = &read_file("ssh $current_vm echo $current_vm is alive. 2>&1 |","");
+	print STDERR "Alive check returns [$retval]\n" if( $cpi_vars::VERBOSITY );
+	return 1 if( $retval =~ /alive/ );
+	sleep(2);
 	} while( $timer-- > 0 );
     print STDERR "Failed to wake $current_vm after $timer seconds.";
     return undef;
