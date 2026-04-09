@@ -287,7 +287,7 @@ push( @BOOT_ARGS, "-nographic -serial mon:stdio" )	# -append console=ttyS0"
 
 my $rem = ( $RUNNING_ON_VMHOST ? "" : "ssh $SSHUSERHOST " );
 
-&fatal("Cannot read $ARGS{command}")
+&fatal("Cannot read $ARGS{command}:  $!")
     if( $ARGS{command} && ! -r $ARGS{command} );
 
 my $printed_header = 0;
