@@ -151,24 +151,24 @@ sub check_files
 			if( ! -l _ || $ARGS{linkcheck} )
 			    {
 			    push( @mismatches,
-				sprintf("mode (%07o vs %07o)", $mode, $ARGS{mode}) )
+				sprintf("mode %07o should be %07o", $mode, $ARGS{mode}) )
 				if( $ARGS{mode} ne $mode );
 			    }
 			else
 			    {	# Symlink protections only have meaning on BSD
 			    push( @mismatches,
-				sprintf("mode (%04o??? vs %07o)", $mode>>9, $ARGS{mode}) )
+				sprintf("mode %04o??? should be %07o", $mode>>9, $ARGS{mode}) )
 				if( ($ARGS{mode}>>9) ne ($mode>>9) );
 			    }
 			}
 		    push( @mismatches,
-			sprintf("owner (%07o vs %07o)", $uid, $ARGS{uid}) )
+			sprintf("owner %d should be %d", $uid, $ARGS{uid}) )
 			if( $ARGS{uid} && $ARGS{uid} ne $uid );
 		    push( @mismatches,
-			sprintf("group (%07o vs %07o)", $gid, $ARGS{gid}) )
+			sprintf("group %d should be %d", $gid, $ARGS{gid}) )
 			if( $ARGS{gid} && $ARGS{gid} ne $gid );
 		    push( @mismatches,
-			sprintf("size (%d vs %d)", $gid, $ARGS{size}) )
+			sprintf("size %d should be %d", $gid, $ARGS{size}) )
 			if( $ARGS{size} && $ARGS{size} ne $gid );
 		    if( $ARGS{checksum} )
 			{
