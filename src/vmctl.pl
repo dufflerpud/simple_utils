@@ -189,7 +189,7 @@ sub wake_vm
 
     do  {
         my $retval = &read_file("ssh $current_vm echo $current_vm is alive 2>&1 |","");
-	chomp( $retval );
+	$retval =~ s/[\r\n]//g;
 	print STDERR "Alive check returns [$retval]\n" if( $cpi_vars::VERBOSITY );
 	return 1 if( $retval =~ /alive/ );
 	sleep(2);
