@@ -183,18 +183,24 @@ sub best_vmname
 sub wake_vm
     {
     my( $current_vm, $timer ) = @_;
-    $timer ||= 120;	# 2 minutes
+    my $timeout = time() + ( $timer || 120 );	# Two minute default
 
     &echodo("virsh -c $VIRSH_URI start $current_vm");
 
-    do  {
+    while( 1 )
+	{
         my $retval = &read_file("ssh $current_vm echo $current_vm is alive 2>&1 |","");
 	$retval =~ s/[\r\n]//g;
-	print STDERR "Alive check returns [$retval]\n" if( $cpi_vars::VERBOSITY );
-	return 1 if( $retval =~ /alive/ );
+	print STDERR "Alive? returns [$retval]\n" if( $cpi_vars::VERBOSITY );
+	if( $retval =~ /alive/ )
+	    { return 1; }
+	elsif( time() >= $timeout )
+	    {
+	    print STDERR "Failed to wake $current_vm after $timer seconds.";
+	    return undef;
+	    }
 	sleep(2);
-	} while( $timer-- > 0 );
-    print STDERR "Failed to wake $current_vm after $timer seconds.";
+	}
     return undef;
     }
 
