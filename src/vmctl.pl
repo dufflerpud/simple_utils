@@ -183,7 +183,8 @@ sub best_vmname
 sub wake_vm
     {
     my( $current_vm, $timer ) = @_;
-    my $timeout = time() + ( $timer || 120 );	# Two minute default
+    $timer ||= 120;
+    my $timeout = time() + $timer;	# Two minute default
 
     &echodo("virsh -c $VIRSH_URI start $current_vm");
 
