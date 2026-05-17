@@ -184,7 +184,7 @@ sub do_one_file
 	    { $c="C"; $horiz_bar="-"x$SCREEN_WIDTH; }
 	elsif( grep($ext eq $_, "js" ) )
 	    { $c="//"; $horiz_bar="/"x$SCREEN_WIDTH; }
-	elsif( grep($ext eq $_, "html", "htm" ) )
+	elsif( grep($ext eq $_, "html", "htm", "xml" ) )
 	    {
 	    $c="--";
 	    my $bar = "-" x $SCREEN_WIDTH;
