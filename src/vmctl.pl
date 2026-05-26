@@ -314,7 +314,13 @@ foreach my $current_vm ( @vmlist )
 	    {
 	    my $bn = &basename( $ARGS{command} );
 	    my $log = &time_string("$DIRS{Logs}/$bn.%04d-%02d-%02d-%02d:%02d.$current_vm");
-	    &echodo("ssh -T $current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1");
+	    if( $current_vm !~ /openvms/i  )
+	        { &echodo("ssh -T $current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1"); }
+	    else
+		{
+		&echodo("scp ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
+		&echodo("ssh -T ",&quotes($current_vm,"${current_vm}:tmp/ssh.command"),">",&quotes($log),"2>&1");
+		}
 	    }
 	&echodo("virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
 	}
