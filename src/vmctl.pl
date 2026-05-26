@@ -193,7 +193,7 @@ sub wake_vm
         my $retval = &read_file("ssh $current_vm echo $current_vm is alive 2>&1 |","");
 	$retval =~ s/[\r\n]//g;
 	print STDERR "Alive? returns [$retval]\n" if( $cpi_vars::VERBOSITY );
-	if( $retval =~ /alive/ )
+	if( $retval =~ /alive/ || $retval =~ /OpenVMS/ )
 	    { return 1; }
 	elsif( time() >= $timeout )
 	    {
