@@ -319,7 +319,7 @@ foreach my $current_vm ( @vmlist )
 	    else
 		{
 		&echodo("scp ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
-		&echodo("ssh -T ",&quotes($current_vm,"${current_vm}:tmp/ssh.command"),">",&quotes($log),"2>&1");
+		&echodo("ssh -T $current_vm bash -c ${current_vm}:tmp/ssh.command >",&quotes($log)," 2>&1");
 		}
 	    }
 	&echodo("virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
