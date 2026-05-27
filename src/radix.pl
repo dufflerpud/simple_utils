@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	radix - Find all radices where number has specified digits
+#indx#	radix.pl - Simple program to implement any radix (2..62)
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -26,35 +26,39 @@
 #@HDR@	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #@HDR@	OTHER DEALINGS IN THE SOFTWARE.
 #
-#hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
+#hist#	2026-05-27 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	radix - Find all radices where number has specified digits
-#doc#	Radices from 2 to 62 checked.
+#doc#	Simple program to implement any radix (2..62)
 ########################################################################
 
 use strict;
 
 use lib "/usr/local/lib/perl";
+
 use cpi_file qw( fatal cleanup );
 use cpi_arguments qw( parse_arguments );
+use cpi_vars;
 
 # Put constants here
 
+my $TMP = "/tmp/$cpi_vars::PROG.$$";
 our %ONLY_ONE_DEFAULTS =
     (
-    "rinput"		=>	"",
-    "routput"		=>	"",
-    "input"		=>	"",
-    "output"		=>	""
+    "iradix"		=>	"",
+    "ivalue"		=>	"",
+    "oradix"		=>	"",
+    "ovalue"		=>	""
     );
 
 my @DIGITS = ( 0..9, 'A'..'Z', 'a'..'z' );
 
 # Put variables here.
 
-our @problems;
+my @problems;
 our %ARGS;
-our $exit_stat = 0;
+my $exit_stat = 0;
+
+# Put interesting subroutines here
 
 #########################################################################
 #	Print usage message and die.					#
@@ -63,25 +67,11 @@ sub usage
     {
     &fatal( @_, "",
 	"Usage:  $cpi_vars::PROG <possible arguments>","",
-	"Print out all the integers that match the constraints given.",
-	"",
-	"where <possible arguments> are",
-	"    -i	Input number",
-	"    -ri	Radix of input",
-	"    -o	Output number",
-	"    -ro	Radix of output",
-	"",
-	"Where the radices can range from 2 to ".scalar(@DIGITS)." using".
-	    " the following digits:",
-	"\t".join("",@DIGITS),
-	"",
-	"For instance:",
-	"$cpi_vars::PROG -i1010 -ri2 -o10",
-	"\tConvert 10101 in binary to base 10.",
-	"$cpi_vars::PROG -i10 -ri10 -o5",
-	"\tShow me all of the bases that 10(10) would display as 5.",
-	"$cpi_vars::PROG -o10",
-	"\tShow all numbers in all bases that display as 10 in some base.",
+	"where <possible arguments> is:",
+	"    -ivalue n",
+	"    -iradix n",
+	"    -ovalue n",
+	"    -oradix n"
 	);
     }
 
@@ -158,24 +148,24 @@ sub interactive_logic
     my @try_radices = ( 2 .. scalar(@DIGITS) );
 
     my %totry;
-    foreach my $aind ( "rinput", "routput" )
+    foreach my $aind ( "I", "O" )
 	{
 	@{$totry{$aind}} = ( $ARGS{$aind} ? ($ARGS{$aind}) : @try_radices );
 	}
 
-    foreach my $iradix ( @{$totry{rinput}} )
+    foreach my $iradix ( @{$totry{I}} )
 	{
 	#print "top of i:  $iradix\n";
-	#print "top of {i}:  $ARGS{input}.\n";
+	#print "top of {i}:  $ARGS{ivalue}.\n";
 	my $iv = undef;
-	next if( $ARGS{input} ne "" && !defined( $iv = &nfromradix($ARGS{input},$iradix) ) );
+	next if( $ARGS{ivalue} ne "" && !defined( $iv = &nfromradix($ARGS{ivalue},$iradix) ) );
 	#print "iradix=$iradix iv=",(defined($iv)?$iv:"U"),"\n";
 
-	foreach my $oradix ( @{$totry{routput}} )
+	foreach my $oradix ( @{$totry{O}} )
 	    {
 	    #print "top of o:  $oradix\n";
 	    my $ov = undef;
-	    next if( $ARGS{output} ne "" && !defined( $ov = &nfromradix($ARGS{output},$oradix) ) );
+	    next if( $ARGS{ovalue} ne "" && !defined( $ov = &nfromradix($ARGS{ovalue},$oradix) ) );
 	    #print "oradix=$oradix ov=",(defined($ov)?$ov:"U"),"\n";
 
 	    if( defined($iv) )
@@ -202,18 +192,10 @@ sub interactive_logic
 #	Main								#
 #########################################################################
 
-if( $ENV{SCRIPT_NAME} )
-    { &CGI_arguments(); }
-else
-    { &parse_arguments(); }
-
-push( @problems, "-i or -o must be specified.")
-    if( ! $ARGS{input} && ! $ARGS{output} );
-
-&usage(@problems) if( @problems );
+&parse_arguments();
 
 &interactive_logic();
 
-#print "$ARGS{input}($ARGS{rinput}) = $ARGS{output}($ARGS{routput})\n";
+#print "$ARGS{ivalue}($ARGS{iradix}) = $ARGS{ovalue}($ARGS{oradix})\n";
 
-cleanup($exit_stat);
+&cleanup($exit_stat);
