@@ -37,9 +37,7 @@ use lib "/usr/local/lib/perl";
 
 use cpi_file qw( fatal cleanup );
 use cpi_arguments qw( parse_arguments );
-
-my $WORDS = "/usr/share/dict/words";
-my $PROG = ( $_ = $0, s+.*/++, s/\.[^\.]*$//, $_ );
+use cpi_vars;
 
 my %letter_points =
     (
@@ -61,7 +59,12 @@ my $exit_status = 0;
 sub usage
 #########################################################################
     {
-    &fatal(@_,"","Usage:  $PROG -letters=<letters> [-pattern=<pattern>]");
+    &fatal(@_,"","Usage:  $cpi_vars::PROG <possible arguments>",
+        "    where <possible arguments are>:",
+	"	-letters=<letters>    (required)",
+	"	-pattern=<pattern>    (optional)",
+	"	-dictionary=<file>    (optional)"
+	);
     }
 
 my %contains = ();
@@ -69,7 +72,7 @@ my %contains = ();
 sub read_words
 #########################################################################
     {
-    open( INF, $WORDS ) || die("Cannot open ${WORDS}:  $!");
+    open( INF, $ARGS{dictionary} ) || die("Cannot open $ARGS{dictionary}:  $!");
     while( $_ = <INF> )
 	{
 	chomp( $_ );
@@ -156,6 +159,7 @@ sub generate_lex
 %ARGS = &parse_arguments({
     switches=>
     	{
+	dictionary	=>	"/usr/share/dict/words",
 	letters		=>	"",
 	pattern		=>	""
 	}
