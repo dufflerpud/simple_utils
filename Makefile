@@ -35,6 +35,7 @@ test:
 		$(BINDIR)/square -width 3
 		$(BINDIR)/permute This is a test
 		$(BINDIR)/radix -ivalue=10 -ovalue=45
+		$(BINDIR)/words_with -letters=fred
 
 %:
 		@echo "Invoking std_$@ rule:"
