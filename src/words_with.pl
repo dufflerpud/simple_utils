@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	words_with - Show words using specified letters
+#indx#	words_with.pl - Software to help me cheat at Scrabble
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2024-2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -26,12 +26,17 @@
 #@HDR@	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #@HDR@	OTHER DEALINGS IN THE SOFTWARE.
 #
-#hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
+#hist#	2026-05-27 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	words_with - Show words using specified letters
+#doc#	Software to help me cheat at Scrabble
 ########################################################################
 
 use strict;
+
+use lib "/usr/local/lib/perl";
+
+use cpi_file qw( fatal cleanup );
+use cpi_arguments qw( parse_arguments );
 
 my $WORDS = "/usr/share/dict/words";
 my $PROG = ( $_ = $0, s+.*/++, s/\.[^\.]*$//, $_ );
@@ -43,23 +48,20 @@ my %letter_points =
     "s"=>1, "t"=>1, "u"=>4, "w"=>4, "x"=>8, "y"=>4, "z"=>10
     );
 
-my $pattern;
+my %ARGS;
 my $before;
 my $esplen;
 my $check_pattern;
 my $dot_pattern;
 my @patlets;
 
+my $exit_status = 0;
+
 #########################################################################
 sub usage
 #########################################################################
     {
-    print <<EOF;
-$_[0]
-
-Usage:  $PROG letters [pattern]
-EOF
-    exit(1);
+    &fatal(@_,"","Usage:  $PROG -letters=<letters> [-pattern=<pattern>]");
     }
 
 my %contains = ();
@@ -151,45 +153,40 @@ sub generate_lex
 #	Main								#
 #########################################################################
 
-{
-my $letters;
+%ARGS = &parse_arguments({
+    switches=>
+    	{
+	letters		=>	"",
+	pattern		=>	""
+	}
+    });
 
-while( defined( $_ = shift( @ARGV ) ) )
+if( $ARGS{pattern} )
     {
-    if( ! $letters )
-        { $letters = $_; }
-    elsif( ! $pattern )
-        { $pattern = $_; }
-    else
-        { &usage("Unknown argument \"$_\"."); }
-    }
-
-if( $pattern )
-    {
-    $_ = $pattern;
+    $_ = $ARGS{pattern};
     s/\d//g;
-    $letters .= $_;
+    $ARGS{letters} .= $_;
 
-    if( $pattern =~ /^(\d*)(.*?)(\d*)$/ )
+    if( $ARGS{pattern} =~ /^(\d*)(.*?)(\d*)$/ )
         {
 	$before = length($1);
 	my $after = length($3);
         $check_pattern = $2;
-	$dot_pattern = $pattern;
+	$dot_pattern = $ARGS{pattern};
 	$dot_pattern =~ s/\d/./g;
 	$esplen = length( $check_pattern );
-	@patlets = split(//,$pattern);
+	@patlets = split(//,$ARGS{pattern});
 	print "check_pattern=$check_pattern before=$before esplen=$esplen, patlets=",join(",",@patlets).".\n";
-	print "Lexicon is now [$letters]\n";
+	print "Lexicon is now [$ARGS{letters}]\n";
 	}
     }
 
-my @combinations = grep( length($_)>1, &generate_lex( $letters ) );
+my @combinations = grep( length($_)>1, &generate_lex( $ARGS{letters} ) );
 
 &read_words();
 
 my %scores;
-if( ! $pattern )
+if( ! $ARGS{pattern} )
     {
     foreach my $used_letters ( @combinations )
         {
@@ -223,4 +220,5 @@ else
 	printf("%4d %s\n",$scores{$word},$word);
 	}
     }
-}
+
+&cleanup( $exit_status );
