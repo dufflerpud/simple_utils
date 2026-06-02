@@ -133,7 +133,7 @@ my %ARGS = &parse_arguments({
     switches=>
 	{
 	input_file	=> $MACHINES,
-	output_file	=> $MACHINES.&time_string(".%04d-%02d-%02d-%02d:%-02d"),
+	output_file	=> $MACHINES.&time_string(".%04d-%02d-%02d-%02d:%02d"),
 	hosts_file	=> "/etc/hosts",
 	ethers_file	=> "/etc/ethers",
 	named_files	=> "/var/named",
