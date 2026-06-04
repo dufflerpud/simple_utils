@@ -69,6 +69,8 @@ our @problems;
 our %ARGS;
 our $exit_status = 0;
 my %STATES;
+my $KEYFILE = "";
+my $SSHUSER = "";
 
 #########################################################################
 #	Print a usage message and exit.					#
@@ -190,7 +192,7 @@ sub wake_vm
 
     while( 1 )
 	{
-        my $retval = &read_file("ssh $current_vm echo $current_vm is alive 2>&1 |","");
+        my $retval = &read_file("ssh$KEYFILE $SSHUSER$current_vm echo $current_vm is alive 2>&1 |","");
 	$retval =~ s/[\r\n]//g;
 	print STDERR "Alive? returns [$retval]\n" if( $cpi_vars::VERBOSITY );
 	if( $retval =~ /alive/ || $retval =~ /OpenVMS/ )
@@ -215,6 +217,8 @@ sub wake_vm
     switches=>
     	{
 	"verbosity"	=>	0,
+	"sshuser"	=>	"testuser",
+	"sshkey"	=>	"",
 	"yes"		=>	{ alias=>["-answer=yes"] },
 	"no"		=>	{ alias=>["-answer=no"] },
 	"answer"	=>	[ "ask", "yes", "no" ],
@@ -237,6 +241,22 @@ sub wake_vm
 	"command"	=>	""
 	}
     });
+
+if( $ARGS{sshuser} )
+    {
+    $SSHUSER=$ARGS{sshuser}.'@';
+    $ARGS{sshkey} ||= $ARGS{sshuser};
+    }
+
+if( $ARGS{sshkey} )
+    {
+    if( -f $ARGS{sshkey} )
+	{ $KEYFILE = " -i $ARGS{sshkey}"; }
+    elsif( -f "$ENV{HOME}/.ssh/$ARGS{sshkey}" )
+	{ $KEYFILE = " -i $ENV{HOME}/.ssh/$ARGS{sshkey}"; }
+    else
+        { printf "Cannot find a keyfile for $ARGS{sshkey}, using default.\n"; }
+    }
 
 if( $_ = &best_vmname( $cpi_vars::PROG ) )
     {
@@ -315,11 +335,11 @@ foreach my $current_vm ( @vmlist )
 	    my $bn = &basename( $ARGS{command} );
 	    my $log = &time_string("$DIRS{Logs}/$bn.%04d-%02d-%02d-%02d:%02d.$current_vm");
 	    if( $current_vm !~ /openvms/i  )
-	        { &echodo("ssh -T $current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1"); }
+	        { &echodo("ssh$KEYFILE -T $SSHUSER$current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1"); }
 	    else
 		{
-		&echodo("scp ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
-		&echodo("ssh -T $current_vm bash -c tmp/ssh.command >",&quotes($log)," 2>&1");
+		&echodo("scp$KEYFILE ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
+		&echodo("ssh$KEYFILE -T $SSHUSER$current_vm bash -c tmp/ssh.command >",&quotes($log)," 2>&1");
 		}
 	    }
 	&echodo("virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
@@ -329,7 +349,7 @@ foreach my $current_vm ( @vmlist )
 	if( $RUNNING_ON_VMHOST )
 	    { &ask_do("cp",&quotes($ARGS{command},"$DIRS{Commands}/$current_vm.sh")); }
 	else
-	    { &ask_do("scp",&quotes($ARGS{command},"${SSHUSERHOST}:$DIRS{Commands}/$current_vm.sh")); }
+	    { &ask_do("scp",&quotes($ARGS{command},"$SSHUSER${SSHUSERHOST}:$DIRS{Commands}/$current_vm.sh")); }
 	&ask_do("virsh -c $VIRSH_URI start $current_vm");
 	}
     elsif( $ARGS{action} eq "ls_media" || $ARGS{action} eq "status" )
