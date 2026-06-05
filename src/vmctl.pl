@@ -69,8 +69,8 @@ our @problems;
 our %ARGS;
 our $exit_status = 0;
 my %STATES;
-my $KEYFILE = "";
 my $SSHUSER = "";
+my $SSHARGS = " -o StrictHostKeyChecking=no";
 
 #########################################################################
 #	Print a usage message and exit.					#
@@ -192,7 +192,7 @@ sub wake_vm
 
     while( 1 )
 	{
-        my $retval = &read_file("ssh$KEYFILE $SSHUSER$current_vm echo $current_vm is alive 2>&1 |","");
+        my $retval = &read_file("ssh$SSHARGS $SSHUSER$current_vm echo $current_vm is alive 2>&1 |","");
 	$retval =~ s/[\r\n]//g;
 	print STDERR "Alive? returns [$retval]\n" if( $cpi_vars::VERBOSITY );
 	if( $retval =~ /alive/ || $retval =~ /OpenVMS/ )
@@ -251,9 +251,9 @@ if( $ARGS{sshuser} )
 if( $ARGS{sshkey} )
     {
     if( -f $ARGS{sshkey} )
-	{ $KEYFILE = " -i $ARGS{sshkey}"; }
+	{ $SSHARGS .= " -i $ARGS{sshkey}"; }
     elsif( -f "$ENV{HOME}/.ssh/$ARGS{sshkey}" )
-	{ $KEYFILE = " -i $ENV{HOME}/.ssh/$ARGS{sshkey}"; }
+	{ $SSHARGS .= " -i $ENV{HOME}/.ssh/$ARGS{sshkey}"; }
     else
         { printf "Cannot find a keyfile for $ARGS{sshkey}, using default.\n"; }
     }
@@ -335,11 +335,11 @@ foreach my $current_vm ( @vmlist )
 	    my $bn = &basename( $ARGS{command} );
 	    my $log = &time_string("$DIRS{Logs}/$bn.%04d-%02d-%02d-%02d:%02d.$current_vm");
 	    if( $current_vm !~ /openvms/i  )
-	        { &echodo("ssh$KEYFILE -T $SSHUSER$current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1"); }
+	        { &echodo("ssh$SSHARGS -T $SSHUSER$current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1"); }
 	    else
 		{
-		&echodo("scp$KEYFILE ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
-		&echodo("ssh$KEYFILE -T $SSHUSER$current_vm bash -c tmp/ssh.command >",&quotes($log)," 2>&1");
+		&echodo("scp$SSHARGS ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
+		&echodo("ssh$SSHARGS -T $SSHUSER$current_vm bash -c tmp/ssh.command >",&quotes($log)," 2>&1");
 		}
 	    }
 	&echodo("virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
