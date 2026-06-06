@@ -219,6 +219,7 @@ sub wake_vm
 	"verbosity"	=>	0,
 	"sshuser"	=>	"testuser",
 	"sshkey"	=>	"",
+	"shell"		=>	"bash",
 	"yes"		=>	{ alias=>["-answer=yes"] },
 	"no"		=>	{ alias=>["-answer=no"] },
 	"answer"	=>	[ "ask", "yes", "no" ],
@@ -334,12 +335,16 @@ foreach my $current_vm ( @vmlist )
 	    {
 	    my $bn = &basename( $ARGS{command} );
 	    my $log = &time_string("$DIRS{Logs}/$bn.%04d-%02d-%02d-%02d:%02d.$current_vm");
-	    if( $current_vm !~ /openvms/i  )
-	        { &echodo("ssh$SSHARGS -T $SSHUSER$current_vm <",&quotes($ARGS{command}),">",&quotes($log),"2>&1"); }
-	    else
+	    # We're going to assume the command is a $ARGS{shell} script.
+	    if( $current_vm =~ /openvms/i  )
 		{
 		&echodo("scp$SSHARGS ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
-		&echodo("ssh$SSHARGS -T $SSHUSER$current_vm bash -c tmp/ssh.command >",&quotes($log)," 2>&1");
+		&echodo("ssh$SSHARGS -T $SSHUSER$current_vm $ARGS{shell} -c tmp/ssh.command >",&quotes($log)," 2>&1");
+		}
+	    else
+	        {
+		# I could copy it there (similar to VMS), chmod it, run it in place and then delete it.
+		&echodo("ssh$SSHARGS -T $SSHUSER$current_vm $ARGS{shell} <",&quotes($ARGS{command}),">",&quotes($log),"2>&1");
 		}
 	    }
 	&echodo("virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
