@@ -115,24 +115,6 @@ sub same_host
     }
 
 #########################################################################
-#	Show what command you're about to do and then do it.		#
-#########################################################################
-sub ask_do()
-    {
-    my( @args ) = @_;
-    for( my $ans=$ARGS{answer}; 1; )
-        {
-	if( $ans =~ /^n/i )
-	    { print "# ",join(" ",@args),"\n"; return 0; }
-	elsif( $ans =~ /^y/i )
-	    { print "+ ",join(" ",@args),"\n"; system(join(' ',@args)); return 1; }
-	    #{ print "+ ",join(" ",@args),"\n"; return 1; }
-	print join(" ",@args)," (y or n)?  ";
-	$ans = <STDIN>;
-    	}
-    }
-
-#########################################################################
 #	Return the state of the virtual machines.			#
 #	Arguably more importantly, returns a table indexed by all	#
 #	possible names for those machines.				#
@@ -188,7 +170,7 @@ sub wake_vm
     $timer ||= 240;
     my $timeout = time() + $timer;	# Two minute default
 
-    &echodo("virsh -c $VIRSH_URI start $current_vm");
+    &echodo($ARGS{answer},"virsh -c $VIRSH_URI start $current_vm");
 
     while( 1 )
 	{
@@ -326,9 +308,9 @@ foreach my $current_vm ( @vmlist )
     {
     if( $ARGS{action} eq "multi_command" )
         {
-	print   "ARGS{boot}=[",($ARGS{boot}||"UNDEF"),"],",
-		" ARGS{command}=[",($ARGS{command}||"UNDEF"),"]",
-		" ARGS{shutdown}=[",($ARGS{shutdown}||"UNDEF"),"]\n";
+#	print   "ARGS{boot}=[",($ARGS{boot}||"UNDEF"),"],",
+#		" ARGS{command}=[",($ARGS{command}||"UNDEF"),"]",
+#		" ARGS{shutdown}=[",($ARGS{shutdown}||"UNDEF"),"]\n";
 	if( $ARGS{boot} && ! &wake_vm( $current_vm ) )
 	    { $exit_status = 1; continue; }
 	if( $ARGS{command} )
@@ -338,24 +320,24 @@ foreach my $current_vm ( @vmlist )
 	    # We're going to assume the command is a $ARGS{shell} script.
 	    if( $current_vm =~ /openvms/i  )
 		{
-		&echodo("scp$SSHARGS ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
-		&echodo("ssh$SSHARGS -T $SSHUSER$current_vm $ARGS{shell} -c tmp/ssh.command >",&quotes($log)," 2>&1");
+		&echodo($ARGS{answer},"scp$SSHARGS ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
+		&echodo($ARGS{answer},"ssh$SSHARGS -T $SSHUSER$current_vm $ARGS{shell} -c tmp/ssh.command >",&quotes($log)," 2>&1");
 		}
 	    else
 	        {
 		# I could copy it there (similar to VMS), chmod it, run it in place and then delete it.
-		&echodo("ssh$SSHARGS -T $SSHUSER$current_vm $ARGS{shell} <",&quotes($ARGS{command}),">",&quotes($log),"2>&1");
+		&echodo($ARGS{answer},"ssh$SSHARGS -T $SSHUSER$current_vm $ARGS{shell} <",&quotes($ARGS{command}),">",&quotes($log),"2>&1");
 		}
 	    }
-	&echodo("virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
+	&echodo($ARGS{answer},"virsh -c $VIRSH_URI shutdown $current_vm") if( $ARGS{shutdown} );
 	}
     elsif( $ARGS{action} eq "multi_command" )	# Old, will not happen
         {
 	if( $RUNNING_ON_VMHOST )
-	    { &ask_do("cp",&quotes($ARGS{command},"$DIRS{Commands}/$current_vm.sh")); }
+	    { &echodo($ARGS{answer},"cp",&quotes($ARGS{command},"$DIRS{Commands}/$current_vm.sh")); }
 	else
-	    { &ask_do("scp",&quotes($ARGS{command},"$SSHUSER${SSHUSERHOST}:$DIRS{Commands}/$current_vm.sh")); }
-	&ask_do("virsh -c $VIRSH_URI start $current_vm");
+	    { &echodo($ARGS{answer},"scp",&quotes($ARGS{command},"$SSHUSER${SSHUSERHOST}:$DIRS{Commands}/$current_vm.sh")); }
+	&echodo($ARGS{answer},"virsh -c $VIRSH_URI start $current_vm");
 	}
     elsif( $ARGS{action} eq "ls_media" || $ARGS{action} eq "status" )
 	{
@@ -374,36 +356,36 @@ foreach my $current_vm ( @vmlist )
 	}
     elsif( $ARGS{action} eq "setup_links" )
         {
-	&ask_do("rm -f $current_vm; ln -s $cpi_vars::USRLOCAL/bin/$cpi_vars::PROG $current_vm");
+	&echodo($ARGS{answer},"rm -f $current_vm; ln -s $cpi_vars::USRLOCAL/bin/$cpi_vars::PROG $current_vm");
 	}
     elsif( $ARGS{action} eq "reset_media" )
 	{
-	&ask_do("virsh -c $VIRSH_URI destroy $current_vm");
-	&ask_do("${rem}cp -f $DIRS{Freezer}/$current_vm.$DISK_FMT $DIRS{Disks}/$current_vm.$DISK_FMT");
-	&ask_do("virsh -c $VIRSH_URI start $current_vm");
+	&echodo($ARGS{answer},"virsh -c $VIRSH_URI destroy $current_vm");
+	&echodo($ARGS{answer},"${rem}cp -f $DIRS{Freezer}/$current_vm.$DISK_FMT $DIRS{Disks}/$current_vm.$DISK_FMT");
+	&echodo($ARGS{answer},"virsh -c $VIRSH_URI start $current_vm");
 	}
     elsif( $ARGS{action} eq "freeze_media" )
 	{
-	&ask_do("${rem}cp -f $DIRS{Disks}/$current_vm.$DISK_FMT $DIRS{Freezer}/$current_vm.$DISK_FMT");
+	&echodo($ARGS{answer},"${rem}cp -f $DIRS{Disks}/$current_vm.$DISK_FMT $DIRS{Freezer}/$current_vm.$DISK_FMT");
 	}
     elsif( $ARGS{action} eq "archive_media" )
 	{
 	if( $rem )
-	    { &ask_do("${rem}'bzip2 < $DIRS{Disks}/$current_vm.$DISK_FMT > $DIRS{Archives}/$current_vm.$DISK_FMT.bz2'"); }
+	    { &echodo($ARGS{answer},"${rem}'bzip2 < $DIRS{Disks}/$current_vm.$DISK_FMT > $DIRS{Archives}/$current_vm.$DISK_FMT.bz2'"); }
 	else
-	    { &ask_do("bzip2 < $DIRS{Disks}/$current_vm.$DISK_FMT > $DIRS{Archives}/$current_vm.$DISK_FMT.bz2"); }
+	    { &echodo($ARGS{answer},"bzip2 < $DIRS{Disks}/$current_vm.$DISK_FMT > $DIRS{Archives}/$current_vm.$DISK_FMT.bz2"); }
 	}
     elsif( $ARGS{action} eq "disk_boot" )
 	{
-	&ask_do(
+	&echodo($ARGS{answer},
 	    "${rem}exec qemu-system-$ARCH", @BOOT_ARGS,
 	    "-drive file=$DIRS{Disks}/$current_vm.$DISK_FMT",
 	    "-boot menu=on" );
 	}
     elsif( $ARGS{action} eq "iso_boot" )
 	{
-	&ask_do("${rem}qemu-img create -f $DISK_FMT $DIRS{Disks}/$current_vm.$DISK_FMT $ARGS{size}");
-	&ask_do(
+	&echodo($ARGS{answer},"${rem}qemu-img create -f $DISK_FMT $DIRS{Disks}/$current_vm.$DISK_FMT $ARGS{size}");
+	&echodo($ARGS{answer},
 	    "${rem}qemu-system-$ARCH", @BOOT_ARGS,
 	    "-drive file=$DIRS{Disks}/$current_vm.$DISK_FMT",
 	    "-boot d -cdrom",
