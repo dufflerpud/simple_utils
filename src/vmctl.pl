@@ -320,7 +320,7 @@ foreach my $current_vm ( @vmlist )
 	    # We're going to assume the command is a $ARGS{shell} script.
 	    if( $current_vm =~ /openvms/i  )
 		{
-		&echodo($ARGS{answer},"scp$SSHARGS ",&quotes($ARGS{command},"${current_vm}:tmp/ssh.command"));
+		&echodo($ARGS{answer},"scp$SSHARGS ",&quotes($ARGS{command},"$SSHUSER\@${current_vm}:tmp/ssh.command"));
 		&echodo($ARGS{answer},"ssh$SSHARGS -T $SSHUSER$current_vm $ARGS{shell} -c tmp/ssh.command >",&quotes($log)," 2>&1");
 		}
 	    else
