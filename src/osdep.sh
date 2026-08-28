@@ -16,8 +16,8 @@ ecsudo()
 exstat=0
 
 for posdir in /usr/local/etc /boot/system/config/non-packaged/etc ; do
-    if [ -f $posdir/osv_vars.sh ] ; then
-        . $posdir/osv_vars.sh
+    if [ -f $posdir/osv.sh ] ; then
+        . $posdir/osv.sh
     fi
 done
 
