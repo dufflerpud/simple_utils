@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	doc_sep - Filter out all but the specified headers for documentation
+#indx#	github_readme - Filter out all but the specified headers for documentation
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-02-09 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	doc_sep - Filter out all but the specified headers for documentation.
+#doc#	github_readme - Filter out all but the specified headers for documentation.
 #doc#	Can also be used to remove documentation to leave just source
 ########################################################################
 
@@ -168,7 +168,7 @@ my @docs;
 my $old_contents = &read_file( $ARGS{input_file}, &readme_template() );
 my $new_contents;
 if( $old_contents !~ m:(.*<table[^>]*?src=")(.*?)("[^>]*?>)(.*?)(</table>.*<div id=docs>)(.*?)(</div>.*):ms )
-    { &fatal("$ARGS{input_file} does not look like useful to doc_sep."); }
+    { &fatal("$ARGS{input_file} does not look like useful to github_readme."); }
 else
     {
     my( $preamble, $src, $postamble, $table, $prediv, $div, $postdiv ) = ( $1, $2, $3, $4, $5, $6, $7, $8 );
