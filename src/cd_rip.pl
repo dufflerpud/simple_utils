@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-#indx#	cd_rip.pl - Rip tracks off a CD
+#indx#	cd_rip.pl - Rip tracks off a CD, or creates a CD index
 #@HDR@	$Id$
 #@HDR@
 #@HDR@	Copyright (c) 2026 Christopher Caldwell (Christopher.M.Caldwell0@gmail.com)
@@ -28,7 +28,7 @@
 #
 #hist#	2026-10-05 - Christopher.M.Caldwell0@gmail.com - Created
 ########################################################################
-#doc#	Rip tracks off a CD
+#doc#	Rip tracks off a CD or creates a CD index
 ########################################################################
 
 use strict;
@@ -36,16 +36,17 @@ use lib "/usr/local/lib/perl";
 
 use cpi_file qw( fatal read_file write_file cleanup );
 use cpi_arguments qw( parse_arguments );
-use cpi_filename qw( text_to_filename );
+use cpi_filename qw( filename_to_text text_to_filename );
 
 # Put constants here
 
-my $DEST_TYPE = "mp3";
 my $CVT = "/usr/local/bin/nene";
 our %ONLY_ONE_DEFAULTS =
     (
-    "d"	=>	"/dev/cdrom",
-    "i" =>	""
+    "extension"		=>	"mp3",
+    "device"		=>	"/dev/cdrom",
+    "input_file"	=>	"",
+    "output_file"	=>	"index.html"
     );
 
 # Put variables here.
@@ -66,15 +67,10 @@ sub usage
 	"Usage:  $cpi_vars::PROG <possible arguments>","",
 	"where <possible arguments> is:",
 	"    -d <cdrom_device>",
-	"    -i <file_with_track_tifles"
+	"    -e <extension>",
+	"    -i <file_with_track_tifles",
+	"    -o <output file>    (index.html)"
 	);
-    }
-
-#########################################################################
-#########################################################################
-sub fix0s
-    {
-    return sprintf("%02d",$_[0]);
     }
 
 #########################################################################
@@ -92,9 +88,9 @@ sub read_track
 	@matching_files = glob("$track_ind_pretty.*");
 	} while ( @matching_files > 0 );
     my $basename = $track_ind_pretty . "." . &text_to_filename($track_name);
-    my $dest_audio = $basename . "." . $DEST_TYPE;
+    my $dest_audio = $basename . "." . $ARGS{extension};
     my $dest_inf = $basename . ".inf";
-    if( &echodo( "cdda2wav -D $ARGS{d} -x -c 2 -s -t $track_ind" ) )
+    if( &echodo( "cdda2wav -D $ARGS{device} -x -c 2 -s -t $track_ind" ) )
         {
 	&echodo( "$CVT audio.wav $dest_audio" );
 	&echodo( "mv audio.inf $dest_inf" );
@@ -104,19 +100,29 @@ sub read_track
     }
 
 #########################################################################
+#	Figure out album name from current directory.			#
+#########################################################################
+sub get_album_name
+    {
+    my $filename = &read_file("/bin/pwd|");
+    $filename =~ s+.*/++;
+    chomp( $filename );
+    return &filename_to_text( $filename );
+    }
+
+#########################################################################
 #	Rip all the track on the CD.					#
 #########################################################################
 sub all_tracks
     {
-    my $album = &read_file("/bin/pwd|");
-    $album =~ s/_/ /g;
+    my $album = &get_album_name();
     my @lines = ( "<center><table>","<tr><th colspan=2>$album</th></tr>");
     my @titles;
-    if( ! $ARGS{i} )
+    if( ! $ARGS{input_file} )
 	{ @titles = map {sprintf("%02d",$_)} ( 1 .. 99 ); }
     else
 	{
-	open( INF, $ARGS{i} ) || &fatal("Cannot open ${ARGS{i}}:  $!");
+	open( INF, $ARGS{input_file} ) || &fatal("Cannot open ${ARGS{input_file}}:  $!");
 	my @titles = <INF>;
 	close( INF );
 	chomp( @titles );
@@ -127,6 +133,45 @@ sub all_tracks
 	last if( ! $filename );
 	push( @lines, "<tr><th>${title}:</th>",
 	    "<td><a href=$filename>$filename</a></td></tr>" );
+	}
+    push( @lines, "</table></center>" );
+    &write_file( $ARGS{output_file}, join("\n",@lines,"") );
+    }
+
+#########################################################################
+#	Generate table							#
+#########################################################################
+sub generate_table
+    {
+    my $album = &get_album_name();
+    my @lines = ( "<center><table>","<tr><th colspan=2>$album</th></tr>");
+
+    open( INF, $ARGS{input_file} ) || &fatal("Cannot open ${ARGS{input_file}}:  $!");
+    my @titles = <INF>;
+    chomp( @titles );
+    close( INF );
+
+    opendir( D, "." ) || &fatal("Cannot opendir(.):  $!");
+    my @old_filenames = sort( grep(/^\d+\./,readdir(D)) );
+    closedir( D );
+
+    foreach my $fname ( @old_filenames )
+	{
+	if( $fname !~ /^(\d+)\.(.*)\.(\w+)$/ )
+	    { print STDERR "$fname is not in correct format.\n"; }
+	else
+	    {
+	    my( $ind, $middle, $ext ) = ( $1, $2, $3 );
+	    $ind =~ s/^0*//g;
+	    $ind = 0 if( ! $ind );
+	    my $title_index = $ind - 1;
+	    my $newfilename = sprintf("%02d.%s.%s",
+	        $ind, &text_to_filename($titles[$title_index]), $ext );
+	    &echodo( "mv $fname $newfilename" );
+	    push( @lines, "<tr>",
+		"<th align=left>". $titles[$title_index]. "</th>".
+		"<td><a href='$newfilename'>$newfilename</a></td></tr>");
+	    }
 	}
     push( @lines, "</table></center>" );
     &write_file( "index.html", join("\n",@lines,"") );
@@ -143,6 +188,9 @@ else
 
 print join("\n\t","Args:",map{"$_:\t$ARGS{$_}"} sort keys %ARGS), "\n";
 
-&all_tracks();
+if( $ARGS{input_file} )
+    { &generate_table(); }
+else
+    { &all_tracks(); }
 
 &cleanup($exit_stat);
