@@ -293,7 +293,7 @@ EOF
     
     push( @ret,
 	$c,
-	"${c}hist#\t$TODAY - $ARGS{email_address} - Created" )
+	"${c}hist#\t$TODAY - $ARGS{email_address} - Created header" )
 	if( $ARGS{history} );
 
     if( $ARGS{documentation} )
