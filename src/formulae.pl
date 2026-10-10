@@ -38,7 +38,6 @@ use cpi_cgi qw( CGIreceive CGIheader );
 use cpi_setup qw( setup );
 use cpi_vars;
 
-
 my @VARIABLE_ORDER;
 my %FORMULAE;
 my %UNITS;
@@ -192,7 +191,7 @@ sub print_category
     else
 	{
 	$_ = join("",
-	    "<tr><th CAT_SUBST align=left colspan=4>$title</th></tr>",@vals);
+	    "<tr><th CAT_SUBST style='border-top:2px outset black;' align=left colspan=4>$title</th></tr>",@vals);
 	$_ =~ s/CAT_SUBST/bgcolor='$color'/g;
 	return $_;
 	}
@@ -395,7 +394,7 @@ sub print_world
 </head><body $cpi_vars::BODY_TAGS>
 <form name=form method=post>
 <input type=hidden name=show_work value=$SHOW_WORK>
-<center><table border=0 style='border-collapse:collapse'>
+<center><table cellspacing=0 frame=box>
 <tr><td>
     <select name=fnc onChange='submit();'>
 	<option>XL(Select command)
