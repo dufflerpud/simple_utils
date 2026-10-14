@@ -99,10 +99,13 @@ sub do_include
     my( $curdir_spec, $filename_spec, $indexp, $docp ) = @_;
     my $tag;
     my $current_topic;
-    #print STDERR "curdir=$curdir filename=$filename\n";
+    print STDERR "curdir_spec=[$curdir_spec] filename_spec=[$filename_spec]\n"
+        if( $ARGS{verbosity} );
     foreach my $filename ( glob($filename_spec) )
 	{
 	my $curdir = $curdir_spec;
+	print STDERR "processing curdir=[$curdir] filename=[$filename]\n"
+	    if( $ARGS{verbosity} );
 	if( $filename =~ m:^(\/.*?)([^/]*)$: )
 	    { $curdir = $1; }
 	else
@@ -159,6 +162,7 @@ sub do_include
 	{
 	input_file	=> "README.md",
 	output_file	=> "README.md",
+	verbosity	=> 0,
 	},
     non_switches=>\@files
     } );
